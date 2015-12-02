@@ -6,7 +6,7 @@ TEMPLATE = app
 win32 { 
     LIBS += -fopenmp
     TARGET = shelxle
-    #RC_FILE = shelxle.rc
+    RC_FILE = shelxle.rc
 }
 !mac{
 unix {
@@ -51,8 +51,7 @@ HEADERS += window.h \
     historywidget.h\
     fourxle.h\
     savehistorywidget.h \
-    calculator.h \
-    dsrgui.h
+    calculator.h
 SOURCES += main.cpp \
     window.cpp \
     molecule.cpp \
@@ -69,7 +68,6 @@ SOURCES += main.cpp \
     kissfft/kiss_fftnd.c \
     kissfft/kiss_fft.c \
     savehistorywidget.cpp \
-    calculator.cpp \
-    dsrgui.cpp
+    calculator.cpp
 RESOURCES += icons.qrc
 OTHER_FILES += shelxle.rc
