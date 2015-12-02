@@ -34,6 +34,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 QT += opengl
 QT += network
+QT += webkit
 QMAKE_CXXFLAGS += -fopenmp
 # Input
 HEADERS += window.h \

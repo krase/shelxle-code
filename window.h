@@ -20,7 +20,7 @@
 #define WINDOW_H
 #include <QtGui>
 #include <QtNetwork>
-// #include <QtWebKit>
+#include <QtWebKit>
 #include "chgl.h"
 #include "highlighter.h"
 #include "codeeditor.h"
@@ -168,7 +168,6 @@ public:
   void jnk();//!< Julian Henn and Kathrin Meindl frcatal dimension analisis
   void jumpToAtom(int index);//!< if rename mode is visible the atom at index gets renamed if not the cursor of the editor is pointed to the specified atom.
   void jumpToError();//!< the cursor points to the first syntax error in the file.
-  void linkHelp();//!< Show a Link to the online help. 
   void loadAFile();//!< (re)loads the file specified in dirName.
   void loadFile(QString fileName);//!< loads the file with the specified path the listfile is also loaded. @param fileName path to the res / ins file.
   void loadLst();//!< loads the .lst file if it exists.
@@ -214,7 +213,6 @@ public:
   void runShelXL();//!< copies res to ins file and runs shelxl 
   void runExtra();//!< runs rexternal programs
   void runXLWGHT();//!< runs shelxl for convergeWght. 
-  void resiFinderDestroyed();
   void saveScene();//!< saves a srceen shot of the OpenGL widget
   void schnittart(int trunc);//!< the truncation type of the electron density maps changes to trunc @param trunc new truncation type.
   void sdm();//!< the shortest distance matrix is (re)calculated and the structure is grown
@@ -352,7 +350,7 @@ private:
   QList<Qt::CheckState>  extraArguments,extraExtensions, extraDetach;
   QLineEdit *extraPath,*extraName,*extraAltExtEdit,*extraArgumentsEdit,*shxPath,*shxOptions;
   QDockWidget *helpDock;
-//  QWebView *hilfe;
+  QWebView *hilfe;
   //QTextBrowser *hilfe;
   QWidget *shx_group;
   QVBoxLayout *sss,*amdl;

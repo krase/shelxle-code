@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en_US" lang="en_US">
+<head>
+<title> The Editor Window and it's Toolbar </title>
+<link rel="stylesheet" type="text/css" href="style2.css" />
+</head>
+<body>
+<a name="top">&nbsp;</a>
+
+<div id="banner"><img src="icons/banner2.jpg"></div>
+<h1 class="title"> The Editor Window and its Toolbar </h1>
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="editor.html#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<p>
+<img src="icons/theEditor.png"><img src="icons/theEditor2.png">
+<p>
+<h2><a name="EditToolBar"> The Editor Toolbar </a></h2>
+<img src="icons/Edittoolbar.png"><br>
+&nbsp;&nbsp;<b>Undo</b>&nbsp;&nbsp;&nbsp;<b>Redo</b>&nbsp;&nbsp;&nbsp;<b>Cut</b>&nbsp;&nbsp;&nbsp;<b>Copy</b>&nbsp;&nbsp;&nbsp;<b>Paste</b>&nbsp;&nbsp;&nbsp;<b>Search</b>
+<br>
+<table cellspacing="3" cellpadding="3">
+<tr><th>icon</th><th>short-cut (MacOs)</th> <th> description</th></tr>
+<tr><td><img src="icons/editundo.png"></td> <td>Ctrl+Z (Cmd+Z)      </td><td> Undo the last edit step.</td></tr>
+<tr><td><img src="icons/editredo.png"></td> <td>Ctrl+Y (Shift+Cmd+Z)</td><td> Redo the last edit step.</td></tr>
+<tr><td><img src="icons/editcut.png"></td>  <td>Ctrl+X (Cmd+X)      </td><td> Cut out the selected text to Clipboard.</td></tr>
+<tr><td><img src="icons/editcopy.png"></td> <td>Ctrl+C (Cmd+C)      </td><td> Copy the selected text to Clipboard.</td></tr>
+<tr><td><img src="icons/editpaste.png"></td><td>Ctrl+V (Cmd+V)      </td><td> Paste the text in clipboard after the cursor.</td></tr>
+<tr><td><img src="icons/search.png"></td>   <td>Ctrl+F (Cmd+F)      </td><td> Invoke the <a href=#SearchReplace"> Search and Replace Tool </a></td></tr>
+</table>
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h3><a name="OtherIcons">  Other Related Toolbar Icons </a></h3>
+<table cellspacing="3" cellpadding="3">
+<tr><th>icon</th><th>short-cut (MacOs)</th> <th> description</th></tr>
+<tr><td><img src="icons/filesave.png"></td> <td>Ctrl+S (Cmd+S)      </td><td> Saves current changes in editor to file and synchronizes the visualization with editor content.</td></tr>
+<tr><td><img src="icons/efplus.png"></td> <td>Ctrl+ + (Cmd+ +)      </td><td> Increases fontsize of editor and list file viewer.</td></tr>
+<tr><td><img src="icons/efplus.png"></td> <td>Ctrl+ - (Cmd+ -)      </td><td> Decreases fontsize of editor and list file viewer.</td></tr>
+</table>
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h2><a name="SyntaxHighL">  Syntax Highlighting </a></h2>
+<table cellspacing="3" cellpadding="3">
+<tr><th>example</th><th>description</th></tr>
+<tr><td><img src="icons/shelxIstruction.png"></td><td> SHELXL instruction card</td></tr>
+<tr><td><img src="icons/Comment1.png"></td><td> This is a comment for a whole line</td></tr>
+<tr><td><img src="icons/Comment2.png"></td><td> This is a comment for the rest of line</td></tr>
+<tr><td><img src="icons/Comment3.png"></td><td> This is a temporary comment. If a line starts with at least one space character it will be ignored by SHELXL and its content deleted after a SHELXL run. Useful as an easy way of deleting atoms. </td></tr>
+
+<tr><td><img src="icons/numbers.png"></td><td>These are numbers |n| &lt; 10 and |n| &gt; 10 </td></tr>
+<tr><td><img src="icons/continue.png"></td><td>A contiuation line. Lines can be continuated by adding '=' to the end of one line and begining the next line with at least one space.</td></tr>
+<tr><td><img src="icons/toolong.png"></td><td>This line is too long! Lines in shelx.ins or shelx.res files are not allowed to exceed more than 80 characters.</td></tr>
+</table>
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h2><a name="ToolTips">  Mouse Over Tool Tips </a></h2>
+<table>
+	<tr><th>example</th><th>description</th></tr>
+	<tr><td><img src="icons/tooltip1.png"></td><td>If the mouse stays for a while on a line with an instruction then a short description of the insruction and its possible arguments is diplayed as a Tool-Tip.</td></tr>
+	<tr><td><img src="icons/tooltip2.png"></td><td>Here an example of an instruction with more than one version.</td></tr>
+	<tr><td><img src="icons/tooltip3.png"></td><td>Free variables used are interpreted and the result is shown as a Tool-Tip.</td></tr>
+	<tr><td><img src="icons/tooltip4.png"></td><td></td></tr>
+</table>
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h2><a name="LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h2>
+<p>
+If you wish to locate an atom of your editor file in the structure visualization window then right click on the line that contains the atoms name and chose in the pop-up menu 'locate ... in structure'.<br>
+<img src="icons/locateInStructure.png"><br>
+The atom will get selected and centred in the visualization window.<br>
+</p>
+<img src="icons/locateInStructure2.png">
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h2><a name="SearchReplace"> Search and Replace </a></h2>
+<p>
+The search and replace sub window is shown when either 'Ctrl+F' (Cmd+F) or 'F3' is pressed on the keyboard or the <img src="icons/search.png"> icon is clicked. The text in the search-text input is interpreted as a regular expression.  
+If the search text does not match anything in the editor the search-text input window gets colored dark red. 
+<br><img src="icons/searchandreplace1.png"><br>
+The search text in the example above would match all hydrogen atoms in the structure. <pre>'^'</pre> means that the characters following must be at the beginning of the line. <pre>'\d+'</pre> means that characters 0-9 will match if they apear one or more times.  
+</p>
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h3><a name="RegularExpr">  Regular Expressions </a></h3>
+A good text on regexps is Mastering Regular Expressions (Third Edition) by Jeffrey E. F. Friedl, ISBN 0-596-52812-4.
+
+The following text is taken from the Qt-developers help:
+<h4>Characters and Abbreviations for Sets of Characters</h4>
+<table>
+	<tr><th>
+			Element</th><th>	Meaning</th></tr>
+	<tr><td><b>c</b>	</td><td>A character represents itself unless it has a special regexp meaning. e.g. <b>c</b> matches the character c.</td></tr>
+	<tr><td><b>\c</b>	</td><td>A character that follows a backslash matches the character itself, except as specified below. e.g., To match a literal caret at the beginning of a string, write <b>\^</b>.</td></tr>
+	<tr><td><b>\n</b>	</td><td>Matches the ASCII line feed (LF, 0x0A, Unix newline).</td></tr>
+	<tr><td><b>\r</b>	</td><td>Matches the ASCII carriage return (CR, 0x0D).</td></tr>
+	<tr><td><b>\t</b>	</td><td>Matches the ASCII horizontal tab (HT, 0x09).</td></tr>
+	<tr><td><b>. (dot)</b>	</td><td>Matches any character (including newline).</td></tr>
+	<tr><td><b>\d</b>	</td><td>Matches a digit.</td></tr>
+	<tr><td><b>\D</b>	</td><td>Matches a non-digit.</td></tr>
+	<tr><td><b>\s</b>	</td><td>Matches a whitespace character.</td></tr>
+	<tr><td><b>\S</b>	</td><td>Matches a non-whitespace character.</td></tr>
+	<tr><td><b>\w</b>	</td><td>Matches a word character or '_').</td></tr>
+	<tr><td><b>\W</b>	</td><td>Matches a non-word character.</td></tr>
+</table>
+
+<h4>Quantifiers</h4>
+
+By default, an expression is automatically quantified by <b>{1,1}</b>, i.e. it should occur exactly once. In the following list, <b>E</b> stands for expression. An expression is a character, or an abbreviation for a set of characters, or a set of characters in square brackets, or an expression in parentheses.
+<table>
+	<tr><th>Expression Quantifier</th><th>Description</th></tr>
+	<tr><td><b>E?</b>	</td><td>Matches zero or one occurrences of <b>E</b>. This quantifier means The previous expression is optional, because it will match whether or not the expression is found. <b>E?</b> is the same as <b>E{0,1}</b>. e.g., <b>dents?</b> matches 'dent' or 'dents'.</td></tr>
+	<tr><td><b>E+</b>	</td><td>Matches one or more occurrences of <b>E</b>. <b>E+</b> is the same as <b>E{1,}</b>. e.g., <b>0+</b> matches '0', '00', '000', etc.</td></tr>
+<tr><td><b>E*</b>	</td><td>Matches zero or more occurrences of E. It is the same as E{0,}. The * quantifier is often used in error where + should be used. For example, if \s*$ is used in an expression to match strings that end in whitespace, it will match every string because \s*$ means Match zero or more whitespaces followed by end of string. The correct regexp to match strings that have at least one trailing whitespace character is \s+$.</td></tr>
+<tr><td><b>E{n}</b>	</td><td>Matches exactly n occurrences of <b>E</b>. <b>E{n}</b> is the same as repeating <b>E</b> n times. For example, <b>x{5}</b> is the same as xxxxx. It is also the same as <b>E{n,n}</b>, e.g. <b>x{5,5}</b>.</td></tr>
+<tr><td><b>E{n,}</b>	</td><td>Matches at least n occurrences of <b>E</b>.</td></tr>
+<tr><td><b>E{,m}</b>	</td><td>Matches at most m occurrences of <b>E</b>. <b>E{,m}</b> is the same as <b>E{0,m}</b>.</td></tr>
+<tr><td><b>E{n,m}</b>	</td><td>Matches at least n and at most m occurrences of <b>E</b>.</td></tr>
+</table>
+
+<h4>Assertions</h4>
+
+Assertions make some statement about the text at the point where they occur in the regexp but they do not match any characters. In the following list E stands for any expression.
+<table><tr><th>Assertion</th><th>Description</th></tr>
+	<tr><td><b>^</b>   </td><td>The caret signifies the beginning of the string. If you wish to match a literal ^ you must escape it by writing \\^. For example, <b>^#include</b> will only match strings which begin with the characters '#include'. (When the caret is the first character of a character set it has a special meaning.</td></tr>
+	<tr><td><b>$</b>   </td><td>The dollar signifies the end of the string. For example <b>\d\s*$</b> will match strings which end with a digit optionally followed by whitespace. If you wish to match a literal $ you must escape it by writing \\$.</td></tr>
+	<tr><td><b>\b</b>   </td><td>A word boundary. For example the regexp <b>\bOK\b</b> means match immediately after a word boundary (e.g. start of string or whitespace) the letter 'O' then the letter 'K' immediately before another word boundary (e.g. end of string or whitespace). But note that the assertion does not actually match any whitespace so if we write <b>(\bOK\b)</b> and we have a match it will only contain 'OK' even if the string is "It's OK now".</td></tr>
+	<tr><td><b>\B</b>   </td><td>A non-word boundary. This assertion is true wherever <b>\b</b> is false. For example if we searched for <b>\Bon\B</b> in "Left on" the match would fail (space and end of string aren't non-word boundaries), but it would match in "t<b>on</b>ne".</td></tr>
+	<tr><td><b>(?=E)</b>   </td><td>Positive lookahead. This assertion is true if the expression matches at this point in the regexp. For example, <b>const(?=\s+char)</b> matches 'const' whenever it is followed by 'char', as in 'static const char *'. (Compare with const\s+char, which matches 'static const char *'.)</td></tr>
+	<tr><td><b>(?!E)</b>   </td><td>Negative lookahead. This assertion is true if the expression does not match at this point in the regexp. For example, <b>const(?!\s+char)</b> matches 'const' except when it is followed by 'char'.</td></tr>
+</table>
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h2><a name="Completor">  Code Completor </a></h2>
+If you hit a lower case character while the cursor is in column 1 the Code Completor is invoked. The Code Completor is a popup window presenting all SHELXL instruction beginning with the same characters you typed. You can use the arrow keys and 'Enter' or the mouse to select one of the proposed instructions. If you continue typing you can either reduce the matching instruction or ignore the Completor. If you use upper case characters or your typed-in word does not match any SHELXL instruction then the Code Completor does not show up.<br>
+<img src="icons/codeCompletor1.png"><br>
+In order to comment out instructions place the cursor on the column 1 preceding your atom or instruction and type 'r Enter'. This does only work correctly if your atom or instruction starts with an uppercase character.
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h2><a name="AFIX-Block">  AFIX Block Highlighter </a></h2>
+The AFIX-Block Highlighter highlights AFIX blocks beginning with 'AFIX n'. Where n is &gt; 0. AFIX block ends with 'AFIX 0' or HKLF. If a new AFIX n block is opened before an already opened block is closed the color of the AFIX-Block Highlighter changes into red. The normal color of AFIX-Block Highlighter inside of an AFIX-Block is darkgreen. Inside of an AFIX 5m, 6m, 7m,  10m, 11m or 17+m Block the color can change into purple if it is interupted by a hydrogen atom AFIX Block.
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<h2><a name="PART-Block">  PART Block Highlighter </a></h2>
+The PART-Block Highlighter highlights regions in the editor file where atoms belong to PART n and n &ne; 0. 
+<p id="inhalt">
+<font size=+1 weight=bold>Content: </font><br>
+<a href="#EditToolBar"> The Editor Toolbar </a>&nbsp;&nbsp;
+<a href="#OtherIcons">  Other Related Toolbar Icons </a>&nbsp;&nbsp;
+<a href="#SyntaxHighL">  Syntax Highlighting </a>&nbsp;&nbsp;
+<a href="#ToolTips">  Mouse Over Tool Tips </a>&nbsp;&nbsp;
+<a href="#LocateAtoms">  Locating Atoms Found in Editor in the Three Dimensional Structure Visualization </a></h4>&nbsp;&nbsp;
+<a href="#SearchReplace">  Search and Replace </a>&nbsp;&nbsp;
+<a href="#RegularExpr">  Regular Expressions </a>&nbsp;&nbsp;
+<a href="#Completor">  Code Completor </a>&nbsp;&nbsp;
+<a href="#AFIX-Block">  AFIX Block Highlighter </a>&nbsp;&nbsp;
+<a href="#PART-Block">  PART Block Highlighter </a>&nbsp;&nbsp;
+<a href="#top">  Top </a>&nbsp;&nbsp;
+</p>
+<div id="banner">&copy; 2010-2011 Christian B. H&uuml;bschle</div>
+</body>
+</html>

@@ -16,9 +16,9 @@
 **
 ****************************************************************************/
 //äöüß needed to keep this file UTF8 QString::fromUtf8("»")
-int Revision=750;
+int Revision=700;
 #include "window.h"
-//QString datum=QString(__TIME__ " " __DATE__);
+QString datum=QString(__TIME__ " " __DATE__);
 QString latestRev="no network available, or you disabled checking";
 QString lstpatternfile=":lst_and_output_style.ini";
 QString inspatternfile=":ins_res_style.ini";
@@ -27,7 +27,6 @@ void Window::dragEnterEvent(QDragEnterEvent *event) {
      if (event->mimeData()->hasFormat("text/uri-list"))
          event->acceptProposedAction();
 }
-
 
 void Window::dropEvent(QDropEvent *event) {
      QList<QUrl> drops = event->mimeData()->urls();
@@ -66,7 +65,6 @@ Window::Window(){
   //scroller=false;
   setDockNestingEnabled(true);
   otherOpenFiles=false;
-  /*  try no help
   helpDock = new QDockWidget("ShelXle help",this);
   helpDock->setObjectName("Help");
 
@@ -122,9 +120,9 @@ Window::Window(){
 #endif
   helpDock->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetClosable);
   helpDock->setWidget(hilfe);
-  helpDock->hide();
+  helpDock->hide();// */
   addDockWidget(Qt::RightDockWidgetArea, helpDock);
-  // */
+
   {//initialize Edidor
     navibox = new QGroupBox(this);
 
@@ -141,12 +139,6 @@ Window::Window(){
     inculdePartNull->setToolTip("Include part 0 in selection");
     inculdePartNull->setChecked(true);
     inculdePartNull->setVisible(false);
-    QToolButton *nothing=new QToolButton(navibox);
-    nothing->setIcon(QIcon(":/icons/nospell.png"));
-    nothing->setText("no errors");
-    nothing->setIconSize(QSize(22,22));
-    nothing->setToolButtonStyle(Qt::ToolButtonIconOnly);
-
     spellCheckact = new QToolButton(navibox);
     spellCheckact->setIcon(QIcon(":/icons/spell.png"));
     spellCheckact->setText("Jump to error");
@@ -160,7 +152,6 @@ Window::Window(){
     nlt->addWidget(inculdePartNull);
     nlt->addWidget(resiFinder);
     nlt->addWidget(spellCheckact);
-    nlt->addWidget(nothing);
     connect(selectPart,SIGNAL(toggled(bool)),spinSelectPart,SLOT(setVisible(bool)));
     connect(selectPart,SIGNAL(toggled(bool)),inculdePartNull,SLOT(setVisible(bool)));
     connect(selectPart,SIGNAL(stateChanged(int)),this,SLOT(selectParts()));
@@ -175,7 +166,6 @@ Window::Window(){
     ust->setUndoLimit(5);
     qDebug()<<ust->undoLimit();*/
     connect(resiFinder,SIGNAL(activated(QString)),this,SLOT(findResi(QString)));
-    connect(resiFinder,SIGNAL(destroyed(QObject*)),this,SLOT(resiFinderDestroyed()));
     connect(editor,SIGNAL(textChanged ()),this,SLOT(spellCheck())); 
     connect(editor,SIGNAL(cursorPositionChanged ()),this,SLOT(updateLC()));
     connect(editor,SIGNAL(findInStructure(const QString&)),this,SLOT(findInStructure(const QString &)));
@@ -691,9 +681,7 @@ Window::Window(){
   connect(chgl,SIGNAL(insertCHIV(double, double, QList<MyAtom>,QString)),this ,SLOT(insertCHIV(double,double,QList<MyAtom>,QString)));
   connect(chgl,SIGNAL(insertANIS(QList<MyAtom>)),this ,SLOT(insertANIS(QList<MyAtom>)));
   connect(chgl,SIGNAL(newContext()),this,SLOT(trick()));
-  QAction *sma =new QAction("show mat",this);
-  sma->setShortcut(tr("Alt+F1"));
-  connect(sma,SIGNAL(triggered()),chgl,SLOT(showMatrix()));
+
   for (int i = 0; i < MaxRecentFiles; ++i) {
     recentFileActs[i] = new QAction(this);
     recentFileActs[i]->setVisible(false);
@@ -931,9 +919,6 @@ Window::Window(){
     a=moveMenu->addAction(tr("Rotate right"),     this,SLOT(rotr   ()),QKeySequence(Qt::ALT + Qt::Key_Right));
     a=moveMenu->addAction(tr("Rotate upwards"),   this,SLOT(rotu   ()),QKeySequence(Qt::ALT + Qt::Key_Up));
     a=moveMenu->addAction(tr("Rotate downwards"), this,SLOT(rotd   ()),QKeySequence(Qt::ALT + Qt::Key_Down));
-    moveMenu->addAction(sma);
-    a=moveMenu->addAction("Zoom out",chgl,SLOT(zoomOut()),QKeySequence(Qt::ALT + Qt::CTRL + Qt::Key_Z));
-    a=moveMenu->addAction("view along z direction",chgl,SLOT(along001()));
     viewMenu->addMenu(moveMenu);
     actionEP=a=viewMenu->addAction(QIcon(":/icons/efplus.png"),
 		    tr("Increase editor fontsize"),this,SLOT(increaseEdtiorFont()),
@@ -1046,8 +1031,7 @@ Window::Window(){
     viewMenu->addAction(shxEditorDock->toggleViewAction());
     viewMenu->addAction(chgl->wireButt);
     viewMenu->addSeparator();
-    viewMenu->addAction("Redraw structure",this,SLOT(effuenf()),QKeySequence("F5"));
-    viewMenu->addAction("Reload structure from current file",this,SLOT(loadAFile()),QKeySequence("Ctrl+F5"));
+    viewMenu->addAction("Redraw strucure",this,SLOT(effuenf()),QKeySequence("F5"));
   }
   {
     QAction *a;
@@ -1172,7 +1156,6 @@ Window::Window(){
   fcvsfoAct=fcoMenu->addAction("Fc vs Fo",this,SLOT(foversusfc()));
   fcvsfoAct->setDisabled(true);
   calcAct=fcoMenu->addAction("Crystallographic calculator",this,SLOT(calculator()));
-  calcAct->setEnabled(true);
   calcAct=fcoMenu->addAction("DSRle",this,SLOT(dsr_gui()));
   calcAct->setEnabled(true);
   menuBar()->addMenu(fcoMenu);
@@ -1180,8 +1163,7 @@ Window::Window(){
   {
     helpMenu = new QMenu(tr("Help"), this);
     menuBar()->addMenu(helpMenu);
-    helpMenu->addAction("Help ", this, SLOT(linkHelp()));
-//    helpMenu->addAction(helpDock->toggleViewAction());
+    helpMenu->addAction(helpDock->toggleViewAction());
     helpMenu->addSeparator();
     helpMenu->addAction(tr("About"), this, SLOT(about()));
     helpMenu->addAction(tr("About &Qt"), qApp, SLOT(aboutQt()));
@@ -1543,7 +1525,7 @@ Window::Window(){
       a->setData(5);
       connect(sortGroup,SIGNAL(triggered(QAction*)),this,SLOT(changeSortierWeise(QAction*)));
       runMenu->insertMenu(soact,sortMenu);
-      //delete a;
+      delete a;
   }
 
   mole.einstellung->beginGroup("Labeling");
@@ -2301,7 +2283,7 @@ void Window::spellCheck(){
 //  printf("spell on me!\n");
   altText=t;
   QRegExp rx=QRegExp("\\s|_");
-  QRegExp nch=QRegExp("[^\"\\-~#%&$'`Â§()+\\*\\./@\\[\\]^\\\\{}\\|<>A-Za-z0-9]+");
+  QRegExp nch=QRegExp("[^\"\\-~#%&'`Â§()+\\*\\./@\\[\\]^\\\\{}\\|<>A-Za-z0-9]+");
   QString s,s0;
   QString meld;
   editor->errorInLine.clear();
@@ -2638,17 +2620,17 @@ if (!(chgl->fuse->isVisible()||chgl->grow->isVisible ())){
     chgl->mol->showbonds.clear();
     chgl->mol->selectedatoms.clear();
     for (int o=0; o<mole.asymm.size();o++)
-      mole.showatoms.append(mole.asymm[o]);    
-    mole.packer(mole.sdmcompleter());    
+      mole.showatoms.append(mole.asymm[o]);
+    mole.packer(mole.sdmcompleter());
     mole.showbonds =
-            mole.connecting(mole.showatoms);    
+            mole.connecting(mole.showatoms);
     //if (mol!=chgl->mol) chgl->setMolecule(mole);
     chgl->mol->selectedatoms.clear();
     chgl->murx=1;
     bool growYes=chgl->fuse->isVisible ();
-    chgl->mol->fuse();    
+    chgl->mol->fuse();
     if (growYes) chgl->mol->grow();
-    chgl->pause=false;    
+    chgl->pause=false;
     chgl->updateBondActions();
     chgl->updateGL();
 }
@@ -3790,8 +3772,7 @@ void Window::runExtra(){
   QStringList env = QProcess::systemEnvironment();
   extraProc->setEnvironment(env);
 #endif
- QString dummyargument=al.join(" ");
- al=dummyargument.split(" "); 
+
  if (extraDetach.at(index)) extraProc->startDetached(path,al,dn);
  else {
   extraProc->start(path,al);
@@ -3810,7 +3791,6 @@ void Window::updateExtraOutput(){
     extraOutPut->moveCursor(QTextCursor::End); 
     extraOutPut->ensureCursorVisible ();
     extraOutPut->setReadOnly(true);
-    extraProc->write("\n"); // this is sent to fake a 'pause' waiting for any key so that the script continues
   }else{
     extraOutPut->setReadOnly(false);
     QString s=extraOutPut->toPlainText();
@@ -3924,12 +3904,11 @@ void Window::runShelXL(){
         if (action->data().toBool()) if (!insertAnis()) return;;
   if (maybeSave2()){
     if (mole.qbeforehkl) deleteAllQ();
-//    printf("runXL line %d",__LINE__);
     insertList6();
     xlPutor->clear();
 
     xlPutor->ListFile=false;
-    xlPutor->highlighter->loadHighlightPatterns(lstpatternfile);
+//    xlPutor->highlighter->loadHighlightPatterns(lstpatternfile);
     shxOutputDock->show();
     stoppRefinement->show();
     QObject::disconnect(stoppRefinement, 0, this, 0);
@@ -3951,9 +3930,7 @@ void Window::runShelXL(){
       fcfname.replace(QRegExp(".res$",Qt::CaseInsensitive),".fcf");
       QString fcfname2 = dirName;
       fcfname2.replace(QRegExp(".res$",Qt::CaseInsensitive),".2fcf");
-//      qDebug()<<QFileInfo(insname).lastModified().toString(Qt::TextDate)<<QFileInfo(dirName).lastModified().toString(Qt::TextDate)<<(QFileInfo(dirName).lastModified()>=QFileInfo(insname).lastModified());
-      if (//(0)&&  
-          (QFileInfo(dirName).lastModified()>=QFileInfo(insname).lastModified())){
+      if (QFileInfo(dirName).lastModified()>=QFileInfo(insname).lastModified()){
 	QDir work=QDir(QString("%1/%2saves/").arg(dn).arg(PROGRAM_NAME));
 	QStringList filter;
 	filter << QString("%1_*_.ins").arg(argument);
@@ -3978,22 +3955,11 @@ void Window::runShelXL(){
       }
       else {
 	int but=QMessageBox::information(0,"information",
-QString("<h3>The <b>ins</b>truction file is newer than the <b>res</b>ult file you are working on!</h3> %1 %2 <br> %3 <br> %4<br>Maybe you edited it outside of this program.\
-  <br> Now the your computer clock says: %5<br>%6 %7 (negative numbers here probably indicate asynchronous clocks on network file systems.)<br><hr><b> Click on 'Ignore' to copy your current .res to .ins file and refine.</b>")
+QString("<h3>The <b>ins</b>truction file is newer than the <b>res</b>ult file you are working on!</h3> %1 %2 <br> %3 <br> %4<br>Maybe you edited it outside of this program.")
 		.arg(insname)
 		.arg(dirName)
 		.arg(QFileInfo(insname).lastModified().toString(Qt::TextDate))
-		.arg(QFileInfo(dirName).lastModified().toString(Qt::TextDate))
-                .arg(QDateTime::currentDateTime().toString(Qt::TextDate))
-#if (QT_VERSION >= 0x040700)
-                .arg(QFileInfo(insname).lastModified().msecsTo(QDateTime::currentDateTime()))
-                .arg(QFileInfo(dirName).lastModified().msecsTo(QDateTime::currentDateTime()))
-#else 
-                .arg(QFileInfo(insname).lastModified().secsTo(QDateTime::currentDateTime()))
-                .arg(QFileInfo(dirName).lastModified().secsTo(QDateTime::currentDateTime()))
-
-#endif
-                ,QMessageBox::Ignore|QMessageBox::Ok);
+		.arg(QFileInfo(dirName).lastModified().toString(Qt::TextDate)),QMessageBox::Ignore|QMessageBox::Ok);
        if (but==QMessageBox::Ignore){
         QDir work=QDir(QString("%1/%2saves/").arg(dn).arg(PROGRAM_NAME));
 	QStringList filter;
@@ -4250,7 +4216,6 @@ void Window::changeSortierWeise(QAction* action){
 }
 
 void Window::sortAtoms(){
-  if (mole.asymm.isEmpty()) return;
 
     const QString sicher = editor->toPlainText();
     //find atomranges
@@ -4536,9 +4501,7 @@ void Window::loadLst(){
   if (mole.einstellung->contains("ListFilePos")){
       xlPutor->setReadOnly(false);
       int mipo= qMin(wl,mole.einstellung->value("ListFilePos",0).toInt());       
-     // printf("mipo %d\n",mipo);
       QTextCursor c=xlPutor->textCursor();
-     // qDebug()<<c.isNull();
       c.movePosition(QTextCursor::Start);
       c.movePosition(QTextCursor::Down,QTextCursor::MoveAnchor,mipo);
       if (!c.isNull()) xlPutor->setTextCursor(c);
@@ -4546,6 +4509,7 @@ void Window::loadLst(){
       xlPutor->setReadOnly(true);
   }
   mole.einstellung->endGroup();
+
   xlPutor->setReadOnly(true);
 //  shxOutputDock->raise();
   update();
@@ -4620,7 +4584,7 @@ void Window::loadFile(QString fileName){
   files.removeAll(fileName);//alle identischen "fileName" aus der Liste entfernen
   files.prepend(fileName);// und dann vorne anfuegen...
   while (files.size() > MaxRecentFiles)
-    files.removeLast();//hinten abschneiden was laenger als MaxRecentFiles ist
+    files.removeLast();//hinten abschneiden was lÃÂÃÂ¤nger als MaxRecentFiles ist
   mole.einstellung->setValue("recentFileList", files);
   foreach (QWidget *widget, QApplication::topLevelWidgets()) {
     Window *mainWin = qobject_cast<Window *>(widget);
@@ -5103,7 +5067,6 @@ void Window::updateScaleDlg(){
 
 void Window::updateSelectResi(){
   QStringList l = editor->document()->toPlainText().split('\n');
-  if (resiFinder == NULL) return;
   resiFinder->clear();
   resiFinder->addItem("<Select residues>",-1);
   for (int i=0; i<l.size();i++){
@@ -5483,7 +5446,6 @@ void Window::inheritLabels(){
   }
 
 void Window::sina(){//anis rueckrwaerts
-  if (mole.asymm.isEmpty()) return;
   if (chgl->mol->selectedatoms.isEmpty()) {
    QAction *action = qobject_cast<QAction *>(sender());
    int index=-1;
@@ -5675,7 +5637,6 @@ void Window::sina(){//anis rueckrwaerts
 }
 
 void Window::autoHFix(){
-  if (mole.asymm.isEmpty()) return;
   int warmal=mole.asymm.size();
   int warmalAtome=0;
   for (int i=0; i<mole.asymm.size();i++) if (mole.asymm.at(i).an>=0)warmalAtome++;
@@ -6639,7 +6600,6 @@ MyAtom Window::findOH(V3 donor, V3 acceptor,int dindex,QStringList alab){
 }
 
 void Window::invert(){
-  if (mole.asymm.isEmpty()) return;
   //inverting structure
    QList<V3> moves;
    moves.append(V3(1,1,1));//most of the space groups
@@ -7299,7 +7259,6 @@ return (a1.peakHeight>a2.peakHeight);
 }
 
 void Window::addMoreQPeaks(){
-  if (mole.asymm.isEmpty()) return;
   if (fxle->n5==0) return;
 
   for (int i=mole.asymm.size()-1; i>=0; i--){
@@ -7535,12 +7494,7 @@ void Window::findResi(QString index){
   }
 }
 
-void Window::resiFinderDestroyed(){
-  resiFinder = NULL;
-}
-
 void Window::saveScene(){
-  //qDebug()<<"Window::saveScene";
   glGetDoublev(GL_MODELVIEW_MATRIX,chgl->MM);
 
   QList<QByteArray> supo = QImageWriter::supportedImageFormats ();
@@ -7568,22 +7522,8 @@ void Window::saveScene(){
     chgl->exporting=true;
     effuenf();
     chgl->myFont.setPointSize(c);
-   //fprintf(stderr,"bild\n");
-   QPixmap   map = chgl->renderPixmap(a,b);
-   if (map.isNull ()){
-   //printf("map 0\n");
-   if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
-     QImage map=chgl->grabFrameBuffer(true); 
-   //printf("hasOpenGLFramebufferObjects\n");
-     map.save(fileName);
-   }else{
-     QPixmap pixmap = QPixmap::grabWindow( chgl->winId() );
-     pixmap.save(fileName);
-   //printf("not hasOpenGLFramebufferObjects\n");
-   }
-   }else map.save(fileName);
-   //fprintf(stderr,"bild\n");
-   // fprintf(stderr,"bild\n");
+    QPixmap   map = chgl->renderPixmap(a,b);
+    map.save(fileName);
    if(!separateLabelFile->isChecked()) {
     QPixmap fmap = QPixmap(fileName);
     QPainter *paint = new QPainter(&fmap);
@@ -7792,7 +7732,6 @@ bool Window::fileSaveAs(){
 }
 
 void Window::unique(){
-  if (mole.asymm.isEmpty()) return;
   mole.enviSDM(2.5);
 
   QList<int> flags;
@@ -7965,6 +7904,7 @@ void Window::showSearch2(){
   if (shxOutputDock->isVisible()) {
     suchbox2->show();
     search2->setFocus(Qt::OtherFocusReason);
+    qDebug()<<"2";
     QTimer::singleShot(200,search2,SLOT(setFocus()));
   }
 }
@@ -8596,10 +8536,10 @@ void Window::renameRNchanged(int ii){
   QMap<int,QString> resNrClass;
   for (int i=0; i<resiFinder->count(); i++){
     QString resil=resiFinder->itemText(i);
-    resil.remove(QRegExp("^RESI"));//remove resi at the beginning resi could be also a (STUPID) resi class
+    resil.remove("RESI");
     QString resinr=resil;
-    resil.remove(QRegExp("\\b\\d+\\b"));//remove the number which sepeated (e.g. not like CCF3)
-    resinr.remove(resil.trimmed());//the rest should be the number
+    resil.remove(QRegExp("\\b\\d+\\b"));
+    resinr.remove(QRegExp("\\b\\D\\S+"));
     int rn=resinr.toInt();
     resNrClass[rn]=resil.trimmed();
   }
@@ -8758,8 +8698,8 @@ void Window::undoRename(){
 }
 
 void Window::renameThisAtom(int index){
-//  QTime rzeit;
-//  rzeit.start();
+  //QTime rzeit;
+  //rzeit.start();
   if ((index<0)||index>=mole.asymm.size()){
     if (mole.showatoms.at(index).Label.startsWith('Q')){
 
@@ -8782,7 +8722,7 @@ void Window::renameThisAtom(int index){
       return;
     }
   }
-//  printf("1 => %d ms\n", rzeit.elapsed());  rzeit.restart();
+ // printf("1 => %d ms\n", rzeit.elapsed());  rzeit.restart();
   bool warnicht=false;
   int dahin=-1,dohin=-1;
 
@@ -8835,7 +8775,7 @@ void Window::renameThisAtom(int index){
   if (insertSuchString.startsWith('Q')) insertSuchString="HKLF";
   //qDebug()<<"suche nach: "<<insertSuchString;
   QString label = mole.showatoms.at(index).orginalLine.left(80).trimmed();
-//  printf("2 => %d ms\n", rzeit.elapsed());  rzeit.restart();
+  //printf("2 => %d ms\n", rzeit.elapsed());  rzeit.restart();
   QTextDocument *document = editor->document();
   QTextCursor cursor = editor->textCursor();
   cursor.beginEditBlock ();
@@ -8923,7 +8863,6 @@ void Window::renameThisAtom(int index){
 //  printf("3 => %d ms\n", rzeit.elapsed());  rzeit.restart();
   undoAtom.append(mole.asymm[index]);
   undoAtomIndex.append(index);
-//  printf("3' => %d ms\n", rzeit.elapsed());  rzeit.restart();
   QString ol=mole.asymm[index].Label.section('_',0,0);
   QString oldH=ol;
   oldH.replace(QRegExp(QString("^%1").arg(mole.pse(mole.asymm[index].an)),Qt::CaseInsensitive),"H");
@@ -9024,7 +8963,6 @@ void Window::renameThisAtom(int index){
     // !!!!
   }
 //qDebug()<<"redi";
- // printf("3! => %d ms\n", rzeit.elapsed());  rzeit.restart();
   chgl->murx=1;
 
 
@@ -9045,9 +8983,7 @@ void Window::renameThisAtom(int index){
   }
   while (!cursor.isNull()&&(po!=apo));
 
-//  printf("3!a => %d ms\n", rzeit.elapsed());  rzeit.restart();
   cursor.endEditBlock ();
-//  printf("3!b => %d ms\n", rzeit.elapsed());  rzeit.restart();
   if ((!indexIncr->isChecked())&&(labelIndex!=-1)) labelIndex++;
   else {
     if (sufixBox->currentIndex()<0) sufixBox->setCurrentIndex(0);
@@ -9055,13 +8991,10 @@ void Window::renameThisAtom(int index){
   }
   updateLabel();
 
- // printf("3!0 => %d ms\n", rzeit.elapsed());  rzeit.restart();
   chgl->disSelection();
-//  printf("3!1 => %d ms\n", rzeit.elapsed());  rzeit.restart();
   if (chgl->fuse->isVisible())chgl->mol->grow();
   else  chgl->mol->fuse();
 
-//  printf("3!2 => %d ms\n", rzeit.elapsed());  rzeit.restart();
     switch (duplicates()){
     case 1:infoKanalNews("<font color=orange >Some hydrogen atoms have identical names please check.</font>");break;
     case 2:infoKanalNews("<font color=red >Some non-hydrogen atoms have identical names. YOU HAVE TO CHECK BEFORE REFINING!</font>");break;
@@ -9069,9 +9002,9 @@ void Window::renameThisAtom(int index){
     } chgl->murx=1;
     editor->setTextCursor(cursor);
 //    chgl->setRotationCenter(index);
- // printf("4# => %d ms\n", rzeit.elapsed());  rzeit.restart();
+  //printf("4# => %d ms\n", rzeit.elapsed());  rzeit.restart();
     chgl->updateGL();
- // printf("5 => %d ms\n", rzeit.elapsed());  rzeit.restart();
+  //printf("5 => %d ms\n", rzeit.elapsed());  rzeit.restart();
 }
 
 void Window::changeElement(){
@@ -9393,7 +9326,6 @@ int Window::isacommand(QString command){
 }
 
 QString Window::load_sheldrick(QString fileName){
-  chgl->showHidden();
   machPlatz=false;
   chgl->neutrons=false;
   //chgl->neutrons=true;
@@ -9514,7 +9446,6 @@ QString Window::load_sheldrick(QString fileName){
       newAtom.orginalLine=lines.at(i).section("=",0,0);
       lines[i].remove("=");
       int cmd=isacommand(lines.at(i).section(sep,0,0));
-      //qDebug()<<cmd<<lines.at(i);
       QString resiSpez=lines.at(i).section(sep,0,0).section('_',1,1);
       if (cmd==30) fragIgnore=true;
       if (cmd==27) fragIgnore=false;
@@ -9789,6 +9720,7 @@ QString Window::load_sheldrick(QString fileName){
       updateStatusBar("analysing structure...");
 
 //  QTime zeit; zeit.start();
+
     if ((!notRefine)&&(mole.asymm.size()<350)) mole.packer(mole.sdmcompleter());
  // printf(">>%d\n",zeit.elapsed());zeit.restart();
     infoKanalNews(mole.Fragments);
@@ -9803,6 +9735,7 @@ QString Window::load_sheldrick(QString fileName){
     mole.showbonds = mole.connecting(mole.showatoms);
   //printf(">>%d\n",zeit.elapsed());zeit.restart();
      chgl->setMolecule(&mole);
+
     chgl->mol->fuse();
     if ((!notRefine)&&(mole.asymm.size()<350)) {
         if (((!fuseYes)&&(growYes))||(((!fuseYes)&&(!growYes))&&(!startFused))) chgl->mol->grow();
@@ -9845,13 +9778,12 @@ QString Window::load_sheldrick(QString fileName){
   QString fouName=fileName;
   fouName.chop(4);
   fouName.append(".fcf");
+
   
   if (!fxle->loadFouAndPerform(fouName.toLocal8Bit())) {
     //if (fxle->doMaps->isChecked()) infoKanalNews(QString("<font color=red>Could not load %1!</font><br>").arg(fouName));
     fxle->deleteLists();
-    fxle->n1=fxle->n2=fxle->n3=fxle->n5=0;
 }
-//printf("fxle N5 %d\n",fxle->n5);
   if (fxle->doMaps->isChecked()){
       mapcontrol->setVisible(true);
 }
@@ -9862,14 +9794,12 @@ QString Window::load_sheldrick(QString fileName){
   }
   unitNeu="UNIT";
   for (int i = 0; i < sfac.size() ; i++){
-    if (unit.value(sfac.at(i))>9999)
-    unitNeu.append(QString(" %1").arg((int)unit.value(sfac.at(i)))); else
     unitNeu.append(QString(" %1").arg(unit.value(sfac.at(i)),0,'g',4));
     if (unitNeu.split('\n').last().size()>76) unitNeu.append("=\n    ");
   }
   chgl->toggleDockWidgets->setVisible(true);
   astdlg->setDisabled(false);
-//  chgl->hideh->setVisible( (sfac.indexOf(0)!=-1) );
+  chgl->hideh->setVisible( (sfac.indexOf(0)!=-1) );
   toggDocWid(false);
   sinaAct->setVisible(adpat!=0);
   if (!mole.asymm.size()) title.append("!!Empty!!");
@@ -9901,7 +9831,7 @@ QString Window::load_sheldrick(QString fileName){
   QFile lstf(listName);
   if (lstf.open(QIODevice::ReadOnly|QIODevice::Text)){
     QString liste=QString(lstf.readAll());
-    while (liste.contains(" REM")) liste=liste.replace(QRegExp("\n\\s+REM[^\n]*\n",Qt::CaseInsensitive),"\n");
+    while (liste.contains(" REM")) liste=liste.replace(QRegExp("\n REM[^\n]*\n",Qt::CaseInsensitive),"\n");
   //  liste=liste.replace(QRegExp("\n REM[^\n]*\n",Qt::CaseInsensitive),"\n");//das muss man 2 mal machen da die newline am anfang schon weggelesen ist.
     if (liste.contains("Flack x parameter =")){
       QString flackS=liste.section("Flack x parameter =",1).section('\n',0,0);
@@ -9932,7 +9862,6 @@ QString Window::load_sheldrick(QString fileName){
   fcfname.replace(QRegExp(".res$|.ins$",Qt::CaseInsensitive),".fcf");
 
   fcvsfoAct->setEnabled(QFile::exists(fcfname));
-  chgl->showHidden();
   return title;
 }//shelx
 
@@ -9957,7 +9886,6 @@ void Window::toggDocWid(bool weg){
 
 void Window::convergeWght(){
 /*! \brief Update WHGT scheme and refine in a loop until scheme has converged or a maximum of runs has exceeded.*/
-  if (mole.asymm.isEmpty()) return;
   dirName.replace(QRegExp(".ins$",Qt::CaseInsensitive),".res");
   fileSave();
   cycls=0;
@@ -10126,7 +10054,6 @@ void Window::convergeWght(){
   }
 
 void Window::updateWght(){
-  if (mole.asymm.isEmpty()) return;
   QTextDocument *document = editor->document();
   QTextCursor cursor = editor->textCursor();
   cursor.beginEditBlock ();
@@ -10162,7 +10089,6 @@ void Window::updateWght(){
 }
 
 void Window::fixIt(){
-  if (mole.asymm.isEmpty()) return;
   QDialog *fixDlg = new QDialog(this);
   QGroupBox *gpx =new QGroupBox("Checked parameters will not be refined.",fixDlg);
   QVBoxLayout *vbl = new QVBoxLayout();
@@ -10304,7 +10230,6 @@ void Window::changeFixes(int i){
 }
 
 void Window::dispFromWave(){
-  if (mole.asymm.isEmpty()) return;
   QFile kis(":kisselwave");
   kis.open(QIODevice::ReadOnly|QIODevice::Text);
   QByteArray ba=kis.readAll();
@@ -10357,7 +10282,6 @@ void Window::dispFromWave(){
 }
 
 void Window::updateUnit(){
-  if (mole.asymm.isEmpty()) return;
   QTextDocument *document = editor->document();
   QTextCursor cursor = editor->textCursor();
   cursor.beginEditBlock ();
@@ -10384,18 +10308,13 @@ void Window::updateUnit(){
 }
 
 void Window::weedEmptySfacs(){
-  if (mole.asymm.isEmpty()) return;
   QMap<int,double> unit;
   for (int i=0; i<mole.asymm.size(); i++){
     if (mole.asymm.at(i).an>=0) unit[mole.asymm.at(i).an]+= mole.asymm.at(i).sof * mole.cell.symmops.size();
   }
   unitNeu="UNIT";
   for (int i = 0; i < sfac.size() ; i++){
-    if (unit.value(sfac.at(i))) {
-      if (unit.value(sfac.at(i))>9999)
-      unitNeu.append(QString(" %1").arg((int)unit.value(sfac.at(i)))); else
-      unitNeu.append(QString(" %1").arg(unit.value(sfac.at(i)),0,'g',4));
-    }
+    if (unit.value(sfac.at(i))) unitNeu.append(QString(" %1").arg(unit.value(sfac.at(i)),0,'g',4));
     if (unitNeu.split('\n').last().size()>76) unitNeu.append("=\n    ");
   }
   updateUnit();
@@ -10534,12 +10453,6 @@ void Window::updateRecentFileActions() {
   delete einstellung;
 }
 
-void Window::linkHelp(){
-  QMessageBox::about(this, tr("%1-Help").arg(PROGRAM_NAME),
-      tr("<h1>%1-Help</h1><br> The offline help has ben removed. <a href=\"http://ewald.ac.chemie.uni-goettingen.de/shelx/help/\">Click here for Online Help.</a>\n"
-        ).arg(PROGRAM_NAME));
-}
-
 void Window::about(){
     QString openGLVersion=QString("OpenGL Version %1").arg((char *)glGetString(GL_VERSION));
     QMessageBox::about(this, tr("About %1").arg(PROGRAM_NAME),
@@ -10562,14 +10475,13 @@ void Window::about(){
                             "<a href=\"http://shelx.uni-ac.gwdg.de/SHELX/\"><b>SHELX</b> site</a><p>"
                             "<p><a href=\"http://ewald.ac.chemie.uni-goettingen.de/shelx/index.php\">"
                             "Dowload new versions from here</a></p>"
-			    "<p>This is Revision <b>%2</b>"
-                            //"last build was: <b>%3</b></p> "
+			    "<p>This is Revision <b>%2</b> last build was: <b>%3</b></p> "\
                             "<p>The latest Version available is '%6'"
 			    "<p>The Version of Qt used is %4. </p> "\
 			    "<p>%5<br>%8<br>%9 </p><p>The settings of this program are stored in: <b>%7</b>")
 		    .arg(PROGRAM_NAME)
 		    .arg(Revision)
-//		    .arg(datum)
+		    .arg(datum)
 		    .arg(qVersion ())
 		    .arg(openGLVersion)
                     .arg(latestRev)
