@@ -51,7 +51,8 @@ HEADERS += window.h \
     historywidget.h\
     fourxle.h\
     savehistorywidget.h \
-    calculator.h
+    calculator.h \
+    dsrgui.h
 SOURCES += main.cpp \
     window.cpp \
     molecule.cpp \
@@ -68,6 +69,7 @@ SOURCES += main.cpp \
     kissfft/kiss_fftnd.c \
     kissfft/kiss_fft.c \
     savehistorywidget.cpp \
-    calculator.cpp
+    calculator.cpp \
+    dsrgui.cpp
 RESOURCES += icons.qrc
 OTHER_FILES += shelxle.rc

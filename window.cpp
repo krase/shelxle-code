@@ -1173,6 +1173,8 @@ Window::Window(){
   fcvsfoAct->setDisabled(true);
   calcAct=fcoMenu->addAction("Crystallographic calculator",this,SLOT(calculator()));
   calcAct->setEnabled(true);
+  calcAct=fcoMenu->addAction("DSRle",this,SLOT(dsr_gui()));
+  calcAct->setEnabled(true);
   menuBar()->addMenu(fcoMenu);
 
   {
@@ -9126,6 +9128,14 @@ void Window::zoomout(){
 void Window::calculator()
 {
     calcmenu = new Calculator(mole.cell.wave,this);
+}
+
+void Window::dsr_gui()
+{
+    dsr = new DSRGui();
+    dsr->setAttribute(Qt::WA_QuitOnClose);
+    dsr->setMinimumSize(600, 500);
+    dsr->show();
 }
 
 /*

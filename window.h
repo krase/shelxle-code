@@ -46,6 +46,7 @@ int finite(double arg);
 #define vc7hack1 1
 #endif
 #include "calculator.h"
+#include "dsrgui.h"
 
 /*! \brief Window is the main window class of ShelXle most of the magic happens here ;-)
 *
@@ -264,6 +265,7 @@ public:
   void zoomin(); //!< zoomes in 
   void zoomout();//!< zoomes out 
   void calculator(); //!< A dialog to work with resolution and 1,3 distances via the angle
+  void dsr_gui(); //!< A dialog for DSR
 protected:
   void paintEvent(QPaintEvent *event);
   void moveEvent(QMoveEvent *event);
@@ -453,6 +455,7 @@ private:
   bool maybeSave2();
   bool ediVis,oupVis,startFused;
   Calculator *calcmenu;
+  DSRGui *dsr;
 };
 #endif
 
