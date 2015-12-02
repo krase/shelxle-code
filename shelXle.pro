@@ -6,7 +6,7 @@ TEMPLATE = app
 win32 { 
     LIBS += -fopenmp
     TARGET = shelxle
-    RC_FILE = shelxle.rc
+    #RC_FILE = shelxle.rc
 }
 !mac{
 unix {
