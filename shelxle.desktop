@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=ShelXle
+Comment=A Qt GUI for SHELX
+GenericName=ShelXle
+Exec=shelxle
+Icon=shelxle
+Terminal=false
+Categories=Qt;Science;Chemistry;Physics;Education
+Type=Application
