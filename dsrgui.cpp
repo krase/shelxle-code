@@ -1,3 +1,13 @@
+/*
+ ----------------------------------------------------------------------------
+ "THE BEER-WARE LICENSE" (Revision 42):
+ <daniel.kratzert@ac.uni-freiburg.de> wrote this file. As long as you retain
+ this notice you can do whatever you want with this stuff. If we meet some day,
+ and you think this stuff is worth it, you can buy me a beer in return.
+ Daniel Kratzert
+ ----------------------------------------------------------------------------
+*/
+
 #include "dsrgui.h"
 #include <QtGui>
 
@@ -9,6 +19,9 @@
  - show results
 
  - use insertDFIX like method to insert dsrline into file
+ - fix pixmap problem when pic is not there
+ - find solution for "which dsr"
+ -
 */
 
 
@@ -74,12 +87,16 @@ DSRGui::DSRGui(QWidget *parent):
     QLabel* imageLabel = new QLabel();
     chooserLayout->addWidget(fragmentTableView);
     chooserLayout->addWidget(imageLabel);
-    qDebug() << &imageLabel;
-    Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
-    imageLabel->setPixmap(Imagefile);
+    if (Imagefile.size() != QSize(0,0))
+    {
+        Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
+        imageLabel->setPixmap(Imagefile);
+    } else {
+        imageLabel->setMinimumSize(400, 400);
+    }
+
     // fill editLayout with widgets:
     editLayout->addWidget(outtext, 1, 0);
-    //fragLabel->setAlignment(Qt::AlignRight);
 
     fragNameInp->setMaximumWidth(200);
 
@@ -214,8 +231,8 @@ bool DSRGui::DSRFit()
     dsr.setProcessChannelMode(QProcess::MergedChannels);
     dsr.closeWriteChannel();
     outtext->clear();
-    qDebug() << runext << invert;
-    qDebug() << ResFileName;
+    //qDebug() << runext << invert;
+    //qDebug() << ResFileName;
     if (ResFileName.isEmpty())
     {
         outtext->append("No res file chosen. Doing nothing!");
@@ -263,7 +280,7 @@ bool DSRGui::DSRFit()
             dsr.start(dsrpath, QStringList() << QString("-re -t") << ResFileName);
         }
     } else {
-        qDebug() << "Unhandeled option case occoured!!";
+        qDebug() << "Unhandeled option case in DSRGui occoured!!";
     }
     if (!dsr.waitForFinished())
     {
@@ -314,7 +331,7 @@ bool DSRGui::DSRListFragments()
     //split(";");
     fragmentListView->setModel(fragmentList);
     //fragmentList->setStringList(list2);
-    qDebug() << list.size() << "lines";
+    //qDebug() << list.size() << "lines";
     QStandardItemModel *FragListmodel = new QStandardItemModel(list.size()-1, 2, this); //x Rows and 2 Columns
     FragListmodel->setHorizontalHeaderItem(0, new QStandardItem(QString("tag")));
     FragListmodel->setHorizontalHeaderItem(1, new QStandardItem(QString("Fragment Name")));
@@ -334,13 +351,11 @@ bool DSRGui::DSRListFragments()
     fragmentTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     return true;
 }
+
 /*
 bool Window::insertDSRLine(){
 // Insert the DSR command line at cursor position:
-        QTextDocument *document = editor->document();
         QTextCursor cursor = editor->textCursor();
-        //cursor.movePosition(QTextCursor::Start,QTextCursor::MoveAnchor);
-        //cursor = document->find(QRegExp("^UNIT",Qt::CaseInsensitive),cursor);
         cursor.movePosition(QTextCursor::StartOfLine,QTextCursor::MoveAnchor);
         cursor.movePosition(QTextCursor::Down,QTextCursor::MoveAnchor);
         cursor.insertText("REM This is a test!\n");
@@ -357,7 +372,7 @@ bool DSRGui::ResFileOpenDialog()
         return false;
     this->resEdit->setText(fileName);
     //QFile file(fileName);
-    qDebug() << fileName;
+    //qDebug() << fileName;
     this->ResFileName = fileName;
     return true;
 }
