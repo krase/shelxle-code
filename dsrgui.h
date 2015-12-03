@@ -45,7 +45,7 @@ private:
     QString*   outlist;
     QLineEdit* refineEdit; //
     QLineEdit* resEdit; //
-    QLabel*    imageLabel; // label to display the image of a fragment
+    //QLineEdit* fragNameInp; // fragment name of fitting fragment
     QLineEdit* SearchInp; // search input field
     QLineEdit* S1; // source atom 1
     QLineEdit* S2; // source atom 2
@@ -61,7 +61,9 @@ private:
                 *optionsLayout3,
                 *SourceAtomsLayout,
                 *TargetAtomsLayout,
-                *buttonLayout;
+                *buttonLayout,
+                *chooserLayout;
+    QLabel *imageLabel;
     QPushButton* FileOpenButton;
     QStringListModel* fragmentList;  // list of fragments from DSR
     QListView* fragmentListView;  // list of fragments from DSR
@@ -83,12 +85,13 @@ public slots:
 
 private slots:
     bool ResFileOpenDialog();
+    void changePicture(void);
     bool DSRFit();
     void DSRFitExtern(bool checked);
     void InvertFrag(bool checked);
     void RefineOrNot(bool checked);
     bool DSRListFragments(); // list fragments in the DB
-    bool setFragName(QModelIndex name);
+    void setFragName(QModelIndex name);
     void searchFragment(QString name);
     bool ExportFrag();
     //bool insertDSRLine();

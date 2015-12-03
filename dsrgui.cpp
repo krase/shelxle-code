@@ -79,11 +79,18 @@ DSRGui::DSRGui(QWidget *parent):
     //fragNameInp = new QLineEdit;
     SearchInp = new QLineEdit;
 
-    QLabel* imageLabel = new QLabel();
     chooserLayout->addWidget(fragmentTableView);
+    QPixmap Imagefile = QString("D:/GitHub/shelxle-code/fragments/9-bromphen.png");
+    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
+    QLabel* imageLabel = new QLabel();
     chooserLayout->addWidget(imageLabel);
-    imageLabel->setMinimumSize(400, 400);
-
+    if (Imagefile.size() != QSize(0,0))
+    {
+        Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
+        imageLabel->setPixmap(Imagefile);
+    } else {
+        imageLabel->setMinimumSize(400, 400);
+    }
 
     // fill editLayout with widgets:
     editLayout->addWidget(outtext, 1, 0);
@@ -135,25 +142,32 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT (InvertFrag(bool)));
     connect(refineBox, SIGNAL (clicked(bool)),
             this, SLOT (RefineOrNot(bool)));
-    connect(fragmentTableView, SIGNAL(clicked(QModelIndex)),
-            this, SLOT(setFragName(QModelIndex)));
     connect(SearchInp, SIGNAL(textChanged(QString)),
             this, SLOT(searchFragment(QString)));
     connect(exportFragButton, SIGNAL(clicked(bool)),
             this, SLOT(ExportFrag(void)));
+    connect(fragmentTableView, SIGNAL(clicked(QModelIndex)),
+            this, SLOT(setFragName(QModelIndex)));
 }
 
 
-bool DSRGui::setFragName(QModelIndex name)
+void DSRGui::setFragName(QModelIndex name)
 // set the fragment name variable
 {
     fragname = name.sibling(name.row(), 0).data().toString();
-    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
-    QPixmap Imagefile = QString("D:/Programme/DSR/fragments/"+fragname+".png");
-    Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
-    this->imageLabel->setPixmap(Imagefile);
-    return true;
+    outtext->append(fragname);
 }
+
+void DSRGui::changePicture(void)
+{
+    QPixmap Imagefile = QString("D:/GitHub/shelxle-code/fragments/12-dichlorobenz.png");
+    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
+    //QLabel* imageLabel = new QLabel();
+    //chooserLayout->addWidget(imageLabel2);
+    //Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
+    imageLabel->setPixmap(Imagefile);
+}
+
 
 void DSRGui::DSRFitExtern(bool checked)
 // enable write restraints to external file
