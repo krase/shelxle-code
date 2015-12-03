@@ -12,6 +12,7 @@
 #define DSRGUI_H
 
 #include <QDialog>
+#include <QModelIndex>
 
 class QLineEdit;
 class QTabWidget;
@@ -43,7 +44,7 @@ private:
     QString*   outlist;
     QLineEdit* refineEdit; //
     QLineEdit* resEdit; //
-    QLineEdit* fragNameInp; // fragment name of fitting fragment
+    //QLineEdit* fragNameInp; // fragment name of fitting fragment
     QLineEdit* SearchInp; // search input field
     QLineEdit* S1; // source atom 1
     QLineEdit* S2; // source atom 2
@@ -54,12 +55,12 @@ private:
 
     QVBoxLayout* mainVLayout;
     QGridLayout* editLayout;
-    QHBoxLayout* optionsLayout1;
-    QHBoxLayout* optionsLayout2;
-    QHBoxLayout* optionsLayout3;
-    QHBoxLayout* SourceAtomsLayout;
-    QHBoxLayout* TargetAtomsLayout;
-    QHBoxLayout* buttonLayout;
+    QHBoxLayout *optionsLayout1,
+                *optionsLayout2,
+                *optionsLayout3,
+                *SourceAtomsLayout,
+                *TargetAtomsLayout,
+                *buttonLayout;
     QPushButton* FileOpenButton;
     QStringListModel* fragmentList;  // list of fragments from DSR
     QListView* fragmentListView;  // list of fragments from DSR
@@ -86,7 +87,7 @@ private slots:
     void InvertFrag(bool checked);
     void RefineOrNot(bool checked);
     bool DSRListFragments(); // list fragments in the DB
-    bool setFragName(QString name);
+    bool setFragName(QModelIndex name);
     void searchFragment(QString name);
     bool ExportFrag();
     //bool insertDSRLine();

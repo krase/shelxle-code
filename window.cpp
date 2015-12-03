@@ -16,7 +16,7 @@
 **
 ****************************************************************************/
 //äöüß needed to keep this file UTF8 QString::fromUtf8("»")
-int Revision=750;
+int Revision=999;
 #include "window.h"
 //QString datum=QString(__TIME__ " " __DATE__);
 QString latestRev="no network available, or you disabled checking";

@@ -59,7 +59,7 @@ DSRGui::DSRGui(QWidget *parent):
 
     QLabel* sourceLabel = new QLabel(tr("Source Atoms:"));
     //QLabel* targetLabel = new QLabel(tr("Target:"));
-    QLabel* fragLabel = new QLabel(tr("Fragment:"));
+    //QLabel* fragLabel = new QLabel(tr("Fragment:"));
     QLabel* searchLabel = new QLabel(tr("Search Fragment:"));
 
     //QPushButton* listFragsButton = new QPushButton(tr("List Fragments"));
@@ -76,14 +76,12 @@ DSRGui::DSRGui(QWidget *parent):
     // this is a strange hack to define the outtext width:
     outtext->setMinimumWidth(QFontMetrics(outtext->font()).width(
     "##################################################################################"));
-    fragNameInp = new QLineEdit;
+    //fragNameInp = new QLineEdit;
     SearchInp = new QLineEdit;
 
-    //fragPicture->setBackgroundBrush(QImage("D:/Programme/DSR/fragments/9-bromphen.png"));
 
-
-    //QPixmap Imagefile = QString("D:/Programme/DSR/fragments/9-bromphen.png");
-    QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
+    QPixmap Imagefile = QString("D:/Programme/DSR/fragments/"+fragname+".png");
+    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
     QLabel* imageLabel = new QLabel();
     chooserLayout->addWidget(fragmentTableView);
     chooserLayout->addWidget(imageLabel);
@@ -98,7 +96,7 @@ DSRGui::DSRGui(QWidget *parent):
     // fill editLayout with widgets:
     editLayout->addWidget(outtext, 1, 0);
 
-    fragNameInp->setMaximumWidth(200);
+    //fragNameInp->setMaximumWidth(200);
 
     S1 = new QLineEdit;
     S2 = new QLineEdit;
@@ -108,7 +106,7 @@ DSRGui::DSRGui(QWidget *parent):
     SourceAtomsLayout->addWidget(S1);
     SourceAtomsLayout->addWidget(S2);
     SourceAtomsLayout->addWidget(S3);
-    //SourceAtomsLayout->addStretch();
+    SourceAtomsLayout->addStretch();
 
     S1->setMaximumWidth(40);
     S2->setMaximumWidth(40);
@@ -117,17 +115,12 @@ DSRGui::DSRGui(QWidget *parent):
     QPushButton* runDSRButton = new QPushButton(tr("Run!"));
     QPushButton* exportFragButton = new QPushButton(tr("Export Fragment"));
 
-    optionsLayout1->addWidget(fragLabel);
-    optionsLayout1->addWidget(fragNameInp);
     optionsLayout1->addLayout(SourceAtomsLayout);
-    //optionsLayout1->addLayout(TargetAtomsLayout);
     optionsLayout1->addStretch();
 
     optionsLayout2->addWidget(runExtButton);
     optionsLayout2->addWidget(invertFragBox);
     optionsLayout2->addWidget(refineBox);
-    //optionsLayout2->addWidget(FileOpenButton);
-    //optionsLayout2->addWidget(resEdit);
     optionsLayout2->addStretch();
 
     optionsLayout3->addWidget(searchLabel);
@@ -150,8 +143,8 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT (InvertFrag(bool)));
     connect(refineBox, SIGNAL (clicked(bool)),
             this, SLOT (RefineOrNot(bool)));
-    connect(fragNameInp, SIGNAL(textChanged(QString)),
-            this, SLOT(setFragName(QString)));
+    connect(fragmentTableView, SIGNAL(clicked(QModelIndex)),
+            this, SLOT(setFragName(QModelIndex)));
     connect(SearchInp, SIGNAL(textChanged(QString)),
             this, SLOT(searchFragment(QString)));
     connect(exportFragButton, SIGNAL(clicked(bool)),
@@ -159,10 +152,10 @@ DSRGui::DSRGui(QWidget *parent):
 }
 
 
-bool DSRGui::setFragName(QString name)
+bool DSRGui::setFragName(QModelIndex name)
 // set the fragment name variable
 {
-    fragname = name;
+    fragname = name.sibling(name.row(), 0).data().toString();
     return true;
 }
 
