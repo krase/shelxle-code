@@ -27,6 +27,7 @@ class QCheckBox;
 class QStringListModel;
 class QListView;
 class QTableView;
+class QLabel;
 
 
 class DSRGui : public QWidget
@@ -44,7 +45,7 @@ private:
     QString*   outlist;
     QLineEdit* refineEdit; //
     QLineEdit* resEdit; //
-    //QLineEdit* fragNameInp; // fragment name of fitting fragment
+    QLabel*    imageLabel; // label to display the image of a fragment
     QLineEdit* SearchInp; // search input field
     QLineEdit* S1; // source atom 1
     QLineEdit* S2; // source atom 2

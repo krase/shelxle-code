@@ -79,19 +79,11 @@ DSRGui::DSRGui(QWidget *parent):
     //fragNameInp = new QLineEdit;
     SearchInp = new QLineEdit;
 
-
-    QPixmap Imagefile = QString("D:/Programme/DSR/fragments/"+fragname+".png");
-    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
     QLabel* imageLabel = new QLabel();
     chooserLayout->addWidget(fragmentTableView);
     chooserLayout->addWidget(imageLabel);
-    if (Imagefile.size() != QSize(0,0))
-    {
-        Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
-        imageLabel->setPixmap(Imagefile);
-    } else {
-        imageLabel->setMinimumSize(400, 400);
-    }
+    imageLabel->setMinimumSize(400, 400);
+
 
     // fill editLayout with widgets:
     editLayout->addWidget(outtext, 1, 0);
@@ -156,6 +148,10 @@ bool DSRGui::setFragName(QModelIndex name)
 // set the fragment name variable
 {
     fragname = name.sibling(name.row(), 0).data().toString();
+    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
+    QPixmap Imagefile = QString("D:/Programme/DSR/fragments/"+fragname+".png");
+    Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
+    this->imageLabel->setPixmap(Imagefile);
     return true;
 }
 
