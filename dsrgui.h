@@ -85,7 +85,7 @@ public slots:
 
 private slots:
     bool ResFileOpenDialog();
-    void changePicture(void);
+    void changePicture(QString fragname);
     bool DSRFit();
     void DSRFitExtern(bool checked);
     void InvertFrag(bool checked);

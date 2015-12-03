@@ -34,7 +34,7 @@ DSRGui::DSRGui(QWidget *parent):
     this->ResFileName = QString("D:/Programme/DSR/example/p21c.res");
     mainVLayout = new QVBoxLayout(this);
     editLayout = new QGridLayout;
-    QHBoxLayout* chooserLayout = new QHBoxLayout;
+    chooserLayout = new QHBoxLayout;
     SourceAtomsLayout = new QHBoxLayout;
     optionsLayout1 = new QHBoxLayout;
     optionsLayout2 = new QHBoxLayout;
@@ -58,8 +58,6 @@ DSRGui::DSRGui(QWidget *parent):
     QCheckBox* refineBox = new QCheckBox(tr("Do not Refine"));
 
     QLabel* sourceLabel = new QLabel(tr("Source Atoms:"));
-    //QLabel* targetLabel = new QLabel(tr("Target:"));
-    //QLabel* fragLabel = new QLabel(tr("Fragment:"));
     QLabel* searchLabel = new QLabel(tr("Search Fragment:"));
 
     //QPushButton* listFragsButton = new QPushButton(tr("List Fragments"));
@@ -82,11 +80,12 @@ DSRGui::DSRGui(QWidget *parent):
     chooserLayout->addWidget(fragmentTableView);
     QPixmap Imagefile = QString("D:/GitHub/shelxle-code/fragments/9-bromphen.png");
     //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
-    QLabel* imageLabel = new QLabel();
+    imageLabel = new QLabel();
     chooserLayout->addWidget(imageLabel);
     if (Imagefile.size() != QSize(0,0))
     {
         Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
+        imageLabel->setMinimumSize(400, 400);
         imageLabel->setPixmap(Imagefile);
     } else {
         imageLabel->setMinimumSize(400, 400);
@@ -156,15 +155,13 @@ void DSRGui::setFragName(QModelIndex name)
 {
     fragname = name.sibling(name.row(), 0).data().toString();
     outtext->append(fragname);
+    this->changePicture(fragname);
 }
 
-void DSRGui::changePicture(void)
+void DSRGui::changePicture(QString fragname)
 {
-    QPixmap Imagefile = QString("D:/GitHub/shelxle-code/fragments/12-dichlorobenz.png");
-    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
-    //QLabel* imageLabel = new QLabel();
-    //chooserLayout->addWidget(imageLabel2);
-    //Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
+    QPixmap Imagefile = QString("D:/GitHub/shelxle-code/fragments/"+fragname+".png");
+    Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
     imageLabel->setPixmap(Imagefile);
 }
 
