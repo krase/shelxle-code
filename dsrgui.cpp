@@ -154,6 +154,7 @@ void DSRGui::setFragName(QModelIndex name)
 // set the fragment name variable
 {
     fragname = name.sibling(name.row(), 0).data().toString();
+    outtext->clear();
     outtext->append(fragname);
     this->changePicture(fragname);
 }

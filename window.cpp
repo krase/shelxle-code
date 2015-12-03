@@ -1173,7 +1173,7 @@ Window::Window(){
   fcvsfoAct->setDisabled(true);
   calcAct=fcoMenu->addAction("Crystallographic calculator",this,SLOT(calculator()));
   calcAct->setEnabled(true);
-  calcAct=fcoMenu->addAction("DSRle",this,SLOT(dsr_gui()));
+  calcAct=fcoMenu->addAction("run DSR plugin",this,SLOT(dsr_gui()));
   calcAct->setEnabled(true);
   menuBar()->addMenu(fcoMenu);
 
@@ -1892,6 +1892,7 @@ Window::Window(){
 Window::~Window() {
 
   if (calcmenu!=NULL) delete calcmenu;//only delete it if it has bee created. (seg fault)
+  if (dsr!=NULL) delete dsr;
   delete sortMenu;
   delete hidwillpse;
   delete fxle;
