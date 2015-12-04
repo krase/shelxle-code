@@ -48,6 +48,7 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout1 = new QHBoxLayout;
     optionsLayout2 = new QHBoxLayout;
     optionsLayout3 = new QHBoxLayout;
+    //groupBox1 = new QGroupBox(tr("Exclusive Radio Buttons"));
     optionsLayout4 = new QHBoxLayout;
     buttonLayout = new QHBoxLayout;
     //QGroupBox *grBox1 = new QGroupBox(tr("Exclusive Radio Buttons"));
@@ -68,12 +69,12 @@ DSRGui::DSRGui(QWidget *parent):
     runExtBox = new QCheckBox(tr("External Restraints"));
     invertFragBox = new QCheckBox(tr("Invert Coordinates"));
     refineBox = new QCheckBox(tr("Do not Refine"));
-    dfix = new QCheckBox(tr("Calc. DFIX"));
+    dfixBox = new QCheckBox(tr("Calc. DFIX"));
 
     sourceLabel = new QLabel(tr("Source Atoms:"));
     searchLabel = new QLabel(tr("Search Fragment:"));
     partLabel = new QLabel(tr("PART:"));
-    occLabel = new QLabel(tr("Occupancy:"));
+    occLabel = new QLabel(tr("FVAR+Occupancy:"));
     resiLabel = new QLabel(tr("Residue Number:"));
     classLabel = new QLabel(tr("Residue Class:"));
     //enableResiLabel = new QLabel(tr("Use Residue:"));
@@ -112,6 +113,11 @@ DSRGui::DSRGui(QWidget *parent):
     S1 = new QLineEdit;
     S2 = new QLineEdit;
     S3 = new QLineEdit;
+    occ = new QLineEdit;
+    part = new QSpinBox;
+    resinum = new QLineEdit;
+    resiclass = new QLineEdit;
+
     SourceAtomsLayout->addWidget(sourceLabel);
     sourceLabel->setAlignment(Qt::AlignRight);
     SourceAtomsLayout->addWidget(S1);
@@ -122,6 +128,10 @@ DSRGui::DSRGui(QWidget *parent):
     S1->setMaximumWidth(40);
     S2->setMaximumWidth(40);
     S3->setMaximumWidth(40);
+    occ->setMaximumWidth(40);
+    //part->setMaximumWidth(40);
+    resinum->setMaximumWidth(40);
+    resiclass->setMaximumWidth(50);
 
     QPushButton* runDSRButton = new QPushButton(tr("Run!"));
     QPushButton* exportFragButton = new QPushButton(tr("Export Fragment"));
@@ -133,17 +143,24 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout2->addWidget(runExtBox);
     optionsLayout2->addWidget(invertFragBox);
     optionsLayout2->addWidget(refineBox);
+    optionsLayout2->addWidget(dfixBox);
     optionsLayout2->addStretch();
 
     optionsLayout3->addLayout(SourceAtomsLayout);
     optionsLayout3->addStretch();
 
     optionsLayout4->addWidget(partLabel);
+    optionsLayout4->addWidget(part);
+    part->setRange(-99, 99);
+    part->setValue(1);
     optionsLayout4->addWidget(occLabel);
-    //optionsLayout4->addWidget(enableResiLabel);
+    optionsLayout4->addWidget(occ);
     optionsLayout4->addWidget(resiLabel);
+    optionsLayout4->addWidget(resinum);
     optionsLayout4->addWidget(classLabel);
-    optionsLayout4->addWidget(dfix);
+    optionsLayout4->addWidget(resiclass);
+    optionsLayout4->addStretch();
+    //groupBox1->setLayout(optionsLayout4);  // warum geht das nicht?
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(exportFragButton);

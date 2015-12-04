@@ -31,7 +31,7 @@ class QLabel;
 class QGroupBox;
 class QString;
 class QPushButton;
-
+class QSpinBox;
 
 class DSRGui : public QWidget
 {
@@ -46,14 +46,14 @@ public:
 private:
     QTextEdit* outtext;
     QString*   outlist;
-    QLineEdit *SearchInp, // search input field
-              *S1, // source atom 1
-              *S2, // source atom 2
-              *S3, // source atom 3
-              *occ, // occupancy edit field
-              *resinum, // residue number edit field
-              *resiclass, // residue class edit field
-              *part; // part edit field
+    QLineEdit *SearchInp;
+    QLineEdit *S1;
+    QLineEdit *S2;
+    QLineEdit *S3;
+    QLineEdit *occ;
+    QLineEdit *resinum;
+    QLineEdit *resiclass;
+    QSpinBox  *part; // part edit field
 
     QVBoxLayout* mainVLayout;
     QGridLayout* editLayout;
@@ -65,8 +65,8 @@ private:
                 *TargetAtomsLayout,
                 *buttonLayout,
                 *chooserLayout;
-    QGroupBox* grBox1;
-    QGroupBox* grBox2;
+    //QGroupBox* groupBox1;
+    //QGroupBox* grBox2;
     QLabel *imageLabel,
            *sourceLabel,
            *searchLabel,
@@ -85,7 +85,7 @@ private:
               *InvertFragBox,  // invert the fragment coords button
               *refineBox,      // refine or not after transfer
               *invertFragBox,  // enable/disable inverted fragment coordinates
-              *dfix,           // enable/disable rigid group instead of restraints
+              *dfixBox,           // enable/disable rigid group instead of restraints
               *rigidGroup;     // enable/disable keep fragment as rigid group
 
     bool runext;
