@@ -65,7 +65,7 @@ private:
                 *TargetAtomsLayout,
                 *buttonLayout,
                 *chooserLayout;
-    //QGroupBox* groupBox1;
+    QGroupBox* groupBox1;
     //QGroupBox* grBox2;
     QLabel *imageLabel,
            *sourceLabel,

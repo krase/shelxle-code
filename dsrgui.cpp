@@ -48,10 +48,9 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout1 = new QHBoxLayout;
     optionsLayout2 = new QHBoxLayout;
     optionsLayout3 = new QHBoxLayout;
-    //groupBox1 = new QGroupBox(tr("Exclusive Radio Buttons"));
+    groupBox1 = new QGroupBox(tr("Chose Options"));
     optionsLayout4 = new QHBoxLayout;
     buttonLayout = new QHBoxLayout;
-    //QGroupBox *grBox1 = new QGroupBox(tr("Exclusive Radio Buttons"));
 
     // layout for the interactions
     mainVLayout->addLayout(chooserLayout);
@@ -60,7 +59,8 @@ DSRGui::DSRGui(QWidget *parent):
     mainVLayout->addLayout(optionsLayout1);
     mainVLayout->addLayout(optionsLayout2);
     mainVLayout->addLayout(optionsLayout3);
-    mainVLayout->addLayout(optionsLayout4);
+    //mainVLayout->addLayout(optionsLayout4);
+    mainVLayout->addWidget(groupBox1);
     // layout for the buttons
     mainVLayout->addLayout(buttonLayout);
 
@@ -160,7 +160,7 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout4->addWidget(classLabel);
     optionsLayout4->addWidget(resiclass);
     optionsLayout4->addStretch();
-    //groupBox1->setLayout(optionsLayout4);  // warum geht das nicht?
+    groupBox1->setLayout(optionsLayout4);  // warum geht das nicht?
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(exportFragButton);
