@@ -21,8 +21,9 @@
  - use insertDFIX like method to insert dsrline into file
  - fix pixmap problem when pic is not there
  - find solution for "which dsr"
- -
- - implement PUT REPLACE PART OCC RESI DFIX
+
+ - add RESI, DFIX, CF3, CF6, CF9, OCC, PART
+ - REPLACE
 */
 
 
