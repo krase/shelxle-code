@@ -28,6 +28,8 @@
  - add groupBoxes for options
  - residue groupbox title: "set residue, use 0 to disable"
  - make outtext as toggle field. (show/hide output button?) blink button on activity?
+ -
+
 */
 
 
@@ -48,6 +50,7 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout3 = new QHBoxLayout;
     optionsLayout4 = new QHBoxLayout;
     buttonLayout = new QHBoxLayout;
+    //QGroupBox *grBox1 = new QGroupBox(tr("Exclusive Radio Buttons"));
 
     // layout for the interactions
     mainVLayout->addLayout(chooserLayout);
@@ -62,19 +65,18 @@ DSRGui::DSRGui(QWidget *parent):
 
     //QPushButton* FileOpenButton = new QPushButton(tr("SHELXL .res file"));
 
-    QCheckBox* runExtButton = new QCheckBox(tr("External Restraints"));
-    QCheckBox* invertFragBox = new QCheckBox(tr("Invert Coordinates"));
-    QCheckBox* refineBox = new QCheckBox(tr("Do not Refine"));
-    QCheckBox* dfix = new QCheckBox(tr("Calc. DFIX"));
+    runExtBox = new QCheckBox(tr("External Restraints"));
+    invertFragBox = new QCheckBox(tr("Invert Coordinates"));
+    refineBox = new QCheckBox(tr("Do not Refine"));
+    dfix = new QCheckBox(tr("Calc. DFIX"));
 
-    QLabel* sourceLabel = new QLabel(tr("Source Atoms:"));
-    QLabel* searchLabel = new QLabel(tr("Search Fragment:"));
-    QLabel* partLabel = new QLabel(tr("PART:"));
-    QLabel* occLabel = new QLabel(tr("Occupancy:"));
-    QLabel* resiLabel = new QLabel(tr("Residue Number:"));
-    QLabel* classLabel = new QLabel(tr("Residue Class:"));
-    QLabel* enableResiLabel = new QLabel(tr("Use Residue:"));
-    //QLabel* dfixLabel = new QLabel(tr("Calc. DFIX:"));
+    sourceLabel = new QLabel(tr("Source Atoms:"));
+    searchLabel = new QLabel(tr("Search Fragment:"));
+    partLabel = new QLabel(tr("PART:"));
+    occLabel = new QLabel(tr("Occupancy:"));
+    resiLabel = new QLabel(tr("Residue Number:"));
+    classLabel = new QLabel(tr("Residue Class:"));
+    //enableResiLabel = new QLabel(tr("Use Residue:"));
 
     outtext = new QTextEdit;
     fragmentList = new QStringListModel;
@@ -128,7 +130,7 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout1->addWidget(SearchInp);
     optionsLayout1->addStretch();
 
-    optionsLayout2->addWidget(runExtButton);
+    optionsLayout2->addWidget(runExtBox);
     optionsLayout2->addWidget(invertFragBox);
     optionsLayout2->addWidget(refineBox);
     optionsLayout2->addStretch();
@@ -138,7 +140,7 @@ DSRGui::DSRGui(QWidget *parent):
 
     optionsLayout4->addWidget(partLabel);
     optionsLayout4->addWidget(occLabel);
-    optionsLayout4->addWidget(enableResiLabel);
+    //optionsLayout4->addWidget(enableResiLabel);
     optionsLayout4->addWidget(resiLabel);
     optionsLayout4->addWidget(classLabel);
     optionsLayout4->addWidget(dfix);
@@ -153,7 +155,7 @@ DSRGui::DSRGui(QWidget *parent):
     // Signal slot connections:
     connect(runDSRButton, SIGNAL (clicked(bool)),
             this, SLOT (DSRFit()));
-    connect(runExtButton, SIGNAL (clicked(bool)),
+    connect(runExtBox, SIGNAL (clicked(bool)),
             this, SLOT (DSRFitExtern(bool)));
     connect(invertFragBox, SIGNAL (clicked(bool)),
             this, SLOT (InvertFrag(bool)));

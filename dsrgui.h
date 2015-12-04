@@ -28,6 +28,9 @@ class QStringListModel;
 class QListView;
 class QTableView;
 class QLabel;
+class QGroupBox;
+class QString;
+class QPushButton;
 
 
 class DSRGui : public QWidget
@@ -62,8 +65,17 @@ private:
                 *TargetAtomsLayout,
                 *buttonLayout,
                 *chooserLayout;
-    QLabel *imageLabel;
-    QPushButton* FileOpenButton;
+    QGroupBox* grBox1;
+    QGroupBox* grBox2;
+    QLabel *imageLabel,
+           *sourceLabel,
+           *searchLabel,
+           *partLabel,
+           *occLabel,
+           *resiLabel,
+           *classLabel;
+           //*enableResiLabel;
+   // QPushButton* runExtButton;
     QStringListModel* fragmentList;  // list of fragments from DSR
     QListView* fragmentListView;     // list of fragments from DSR
     QTableView* fragmentTableView;   // list of fragments from DSR
@@ -71,7 +83,10 @@ private:
     QString ResFileName;       // Name of the currently processed res file
     QCheckBox *runExtBox,      // Enable external restraints button
               *InvertFragBox,  // invert the fragment coords button
-              *refineBox;      // refine or not after transfer
+              *refineBox,      // refine or not after transfer
+              *invertFragBox,  // enable/disable inverted fragment coordinates
+              *dfix,           // enable/disable rigid group instead of restraints
+              *rigidGroup;     // enable/disable keep fragment as rigid group
 
     bool runext;
     bool invert;
