@@ -43,22 +43,21 @@ public:
 private:
     QTextEdit* outtext;
     QString*   outlist;
-    QLineEdit* refineEdit; //
-    QLineEdit* resEdit; //
-    //QLineEdit* fragNameInp; // fragment name of fitting fragment
-    QLineEdit* SearchInp; // search input field
-    QLineEdit* S1; // source atom 1
-    QLineEdit* S2; // source atom 2
-    QLineEdit* S3; // source atom 3
-    QLineEdit* T1; // target atom 1
-    QLineEdit* T2; // target atom 2
-    QLineEdit* T3; // target atom 3
+    QLineEdit *SearchInp, // search input field
+              *S1, // source atom 1
+              *S2, // source atom 2
+              *S3, // source atom 3
+              *occ, // occupancy edit field
+              *resinum, // residue number edit field
+              *resiclass, // residue class edit field
+              *part; // part edit field
 
     QVBoxLayout* mainVLayout;
     QGridLayout* editLayout;
     QHBoxLayout *optionsLayout1,
                 *optionsLayout2,
                 *optionsLayout3,
+                *optionsLayout4,
                 *SourceAtomsLayout,
                 *TargetAtomsLayout,
                 *buttonLayout,
@@ -66,13 +65,13 @@ private:
     QLabel *imageLabel;
     QPushButton* FileOpenButton;
     QStringListModel* fragmentList;  // list of fragments from DSR
-    QListView* fragmentListView;  // list of fragments from DSR
-    QTableView* fragmentTableView;  // list of fragments from DSR
+    QListView* fragmentListView;     // list of fragments from DSR
+    QTableView* fragmentTableView;   // list of fragments from DSR
 
-    QString ResFileName; // Name of the currently processed res file
-    QCheckBox* runExtBox;  // Enable external restraints button
-    QCheckBox* InvertFragBox;  // invert the fragment coords button
-    QCheckBox* refineBox; // refine or not after transfer
+    QString ResFileName;       // Name of the currently processed res file
+    QCheckBox *runExtBox,      // Enable external restraints button
+              *InvertFragBox,  // invert the fragment coords button
+              *refineBox;      // refine or not after transfer
 
     bool runext;
     bool invert;
@@ -80,11 +79,12 @@ private:
 
     QString fragname;
     QString dsrpath;
+    QString picpath;
 public slots:
 
 
 private slots:
-    bool ResFileOpenDialog();
+    //bool ResFileOpenDialog();
     void changePicture(QString fragname);
     bool DSRFit();
     void DSRFitExtern(bool checked);

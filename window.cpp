@@ -9135,7 +9135,7 @@ void Window::dsr_gui()
 {
     dsr = new DSRGui();
     dsr->setAttribute(Qt::WA_QuitOnClose);
-    dsr->setMinimumSize(600, 500);
+    dsr->setMinimumSize(600, 600);
     dsr->show();
 }
 

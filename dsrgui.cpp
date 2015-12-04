@@ -22,16 +22,18 @@
  - fix pixmap problem when pic is not there
  - find solution for "which dsr"
  -
+ - implement PUT REPLACE PART OCC RESI DFIX
 */
 
 
 DSRGui::DSRGui(QWidget *parent):
     QWidget(parent)
 {
-    dsrpath = "D:/GitHub/DSR/dsr.bat";
-    //dsrpath = "/Applications/DSR/dsr";
-    QString picpath = "D:/Programme/DSR/fragments";
-    this->ResFileName = QString("D:/Programme/DSR/example/p21c.res");
+    //dsrpath = "D:/GitHub/DSR/dsr.bat";
+    dsrpath = "dsr.bat";
+    picpath = "C:/Users/daniel/Documents/GitHub/shelxle-code/fragments/";
+    ResFileName = "C:/Program Files/DSR/example/p21c.res";
+    QPixmap Imagefile = QString("C:/Users/daniel/Documents/GitHub/shelxle-code/fragments/9-bromphen.png");
     mainVLayout = new QVBoxLayout(this);
     editLayout = new QGridLayout;
     chooserLayout = new QHBoxLayout;
@@ -39,6 +41,7 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout1 = new QHBoxLayout;
     optionsLayout2 = new QHBoxLayout;
     optionsLayout3 = new QHBoxLayout;
+    optionsLayout4 = new QHBoxLayout;
     buttonLayout = new QHBoxLayout;
 
     // layout for the interactions
@@ -48,6 +51,7 @@ DSRGui::DSRGui(QWidget *parent):
     mainVLayout->addLayout(optionsLayout1);
     mainVLayout->addLayout(optionsLayout2);
     mainVLayout->addLayout(optionsLayout3);
+    mainVLayout->addLayout(optionsLayout4);
     // layout for the buttons
     mainVLayout->addLayout(buttonLayout);
 
@@ -56,13 +60,17 @@ DSRGui::DSRGui(QWidget *parent):
     QCheckBox* runExtButton = new QCheckBox(tr("External Restraints"));
     QCheckBox* invertFragBox = new QCheckBox(tr("Invert Coordinates"));
     QCheckBox* refineBox = new QCheckBox(tr("Do not Refine"));
+    QCheckBox* dfix = new QCheckBox(tr("Calc. DFIX"));
 
     QLabel* sourceLabel = new QLabel(tr("Source Atoms:"));
     QLabel* searchLabel = new QLabel(tr("Search Fragment:"));
+    QLabel* partLabel = new QLabel(tr("PART:"));
+    QLabel* occLabel = new QLabel(tr("Occupancy:"));
+    QLabel* resiLabel = new QLabel(tr("Residue Number:"));
+    QLabel* classLabel = new QLabel(tr("Residue Class:"));
+    QLabel* enableResiLabel = new QLabel(tr("Use Residue:"));
+    //QLabel* dfixLabel = new QLabel(tr("Calc. DFIX:"));
 
-    //QPushButton* listFragsButton = new QPushButton(tr("List Fragments"));
-
-    resEdit = new QLineEdit;
     outtext = new QTextEdit;
     fragmentList = new QStringListModel;
     fragmentListView = new QListView;
@@ -73,13 +81,11 @@ DSRGui::DSRGui(QWidget *parent):
     outtext->setFont(font);
     // this is a strange hack to define the outtext width:
     outtext->setMinimumWidth(QFontMetrics(outtext->font()).width(
-    "##################################################################################"));
+    "###################################################################################"));
     //fragNameInp = new QLineEdit;
     SearchInp = new QLineEdit;
 
     chooserLayout->addWidget(fragmentTableView);
-    QPixmap Imagefile = QString("D:/GitHub/shelxle-code/fragments/9-bromphen.png");
-    //QPixmap Imagefile = QString("/Users/daniel/Downloads/Daniel_Kratzert.tiff");
     imageLabel = new QLabel();
     chooserLayout->addWidget(imageLabel);
     if (Imagefile.size() != QSize(0,0))
@@ -113,7 +119,8 @@ DSRGui::DSRGui(QWidget *parent):
     QPushButton* runDSRButton = new QPushButton(tr("Run!"));
     QPushButton* exportFragButton = new QPushButton(tr("Export Fragment"));
 
-    optionsLayout1->addLayout(SourceAtomsLayout);
+    optionsLayout1->addWidget(searchLabel);
+    optionsLayout1->addWidget(SearchInp);
     optionsLayout1->addStretch();
 
     optionsLayout2->addWidget(runExtButton);
@@ -121,9 +128,15 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout2->addWidget(refineBox);
     optionsLayout2->addStretch();
 
-    optionsLayout3->addWidget(searchLabel);
-    optionsLayout3->addWidget(SearchInp);
+    optionsLayout3->addLayout(SourceAtomsLayout);
     optionsLayout3->addStretch();
+
+    optionsLayout4->addWidget(partLabel);
+    optionsLayout4->addWidget(occLabel);
+    optionsLayout4->addWidget(enableResiLabel);
+    optionsLayout4->addWidget(resiLabel);
+    optionsLayout4->addWidget(classLabel);
+    optionsLayout4->addWidget(dfix);
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(exportFragButton);
@@ -160,8 +173,9 @@ void DSRGui::setFragName(QModelIndex name)
 }
 
 void DSRGui::changePicture(QString fragname)
+// changes the picture of the fragment to fragname
 {
-    QPixmap Imagefile = QString("D:/GitHub/shelxle-code/fragments/"+fragname+".png");
+    QPixmap Imagefile = QString(picpath+fragname+".png");
     Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
     imageLabel->setPixmap(Imagefile);
 }
@@ -297,6 +311,10 @@ bool DSRGui::DSRFit()
 void DSRGui::searchFragment(QString name)
 // search for fragments in the db
 {
+    if (name.length() < 3)
+    {
+        return;
+    }
     QProcess dsr;
     dsr.start(dsrpath, QStringList() << "-s" << name);
     dsr.setProcessChannelMode(QProcess::MergedChannels);
@@ -364,6 +382,7 @@ bool Window::insertDSRLine(){
 }
 */
 
+/*
 bool DSRGui::ResFileOpenDialog()
 // File dialog to define the res file processed by DSR
 {
@@ -377,4 +396,4 @@ bool DSRGui::ResFileOpenDialog()
     this->ResFileName = fileName;
     return true;
 }
-
+*/
