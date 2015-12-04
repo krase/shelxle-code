@@ -22,6 +22,8 @@
  - fix pixmap problem when pic is not there
  - find solution for "which dsr"
  -
+ - add RESI, DFIX, CF3, CF6, CF9, OCC, PART
+ - REPLACE
 */
 
 
