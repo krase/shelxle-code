@@ -24,6 +24,10 @@
 
  - add RESI, DFIX, CF3, CF6, CF9, OCC, PART
  - REPLACE
+
+ - add groupBoxes for options
+ - residue groupbox title: "set residue, use 0 to disable"
+ - make outtext as toggle field. (show/hide output button?) blink button on activity?
 */
 
 
