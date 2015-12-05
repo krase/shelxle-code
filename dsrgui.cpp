@@ -29,6 +29,8 @@
  - residue groupbox title: "set residue, use 0 to disable"
  - make outtext as toggle field. (show/hide output button?) blink button on activity?
  -
+ - export und run in dritte spalte
+ - statusleiste mit "rem dsr put ..."
 
 */
 
@@ -36,6 +38,7 @@
 DSRGui::DSRGui(QWidget *parent):
     QWidget(parent)
 {
+    setWindowTitle(QString("DSR GUI"));
     //dsrpath = "D:/GitHub/DSR/dsr.bat";
     dsrpath = "dsr.bat";
     picpath = "C:/Users/daniel/Documents/GitHub/shelxle-code/fragments/";
@@ -103,11 +106,11 @@ DSRGui::DSRGui(QWidget *parent):
     chooserLayout->addWidget(imageLabel);
     if (Imagefile.size() != QSize(0,0))
     {
-        Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
-        imageLabel->setMinimumSize(400, 400);
+        Imagefile = Imagefile.scaledToWidth(350, Qt::SmoothTransformation);
+        imageLabel->setMinimumSize(380, 380);
         imageLabel->setPixmap(Imagefile);
     } else {
-        imageLabel->setMinimumSize(400, 400);
+        imageLabel->setMinimumSize(380, 380);
     }
 
     // fill editLayout with widgets:
@@ -173,6 +176,8 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT (RefineOrNot(bool)));
     connect(SearchInp, SIGNAL(textChanged(QString)),
             this, SLOT(searchFragment(QString)));
+    connect(occEdit, SIGNAL(textChanged(QString)),
+            this, SLOT(FvarOcc(QString)));
     connect(partspinner, SIGNAL(valueChanged(int)),
             this, SLOT(PART(int)));
     connect(exportFragButton, SIGNAL(clicked(bool)),
@@ -184,7 +189,7 @@ DSRGui::DSRGui(QWidget *parent):
      * -invert    ok
      * -norefine  ok
      * -dfix      ok
-     * -part
+     * -part      ok
      * -fvar/occ
      * -resinum
      * -resiclass
@@ -214,23 +219,46 @@ void DSRGui::DFIX(bool checked)
 {
     if (checked)
     {
-        this->dfix = true;
+        this->dfix = QString("DFIX");
     } else
     {
-        this->dfix = false;
+        this->dfix = QString("");
     }
     outtext->clear();
-    outtext->append(QString::number(dfix));
+    outtext->append(QString(dfix));
+}
+
+void DSRGui::FvarOcc(QString focc)
+// defines the PART option
+{
+    bool ok;
+    focc.toFloat(&ok);
+    if (ok)
+    {
+        fvarocc = QString("OCC ")+QString::number(focc.toFloat());
+        outtext->clear();
+        //outtext->append(fvarocc);
+    } else if (!ok and focc.length() >= 2) {
+        outtext->clear();
+        outtext->append(QString("Please provide a real number for FVAR/OCC"));
+    }
 }
 
 void DSRGui::PART(int partnum)
-// toggles the PART option
+// defines the PART option
 {
-    part = partnum;
-    outtext->clear();
-    outtext->append(QString::number(part));
+    if (partnum == 0)
+    {
+        part = QString("");
+    }
+    else
+    {
+        QString s = QString::number(partnum);
+        part = QString("PART ")+s ;
+        outtext->clear();
+        outtext->append(part);
+    }
 }
-
 
 void DSRGui::DSRFitExtern(bool checked)
 // enable write restraints to external file

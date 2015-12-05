@@ -92,13 +92,13 @@ private:
     bool runext;
     bool invert;
     bool norefine;
-    bool dfix;
-    int part;
-    float fvarocc;
-    int resinum;
+    QString dfix;
+    QString part;
+    QString fvarocc;
+    QString resinum;
     QString resiclass;
-
     QString fragname;
+
     QString dsrpath;
     QString picpath;
 public slots:
@@ -117,7 +117,7 @@ private slots:
     bool ExportFrag();
     void DFIX(bool checked);
     void PART(int part);
-
+    void FvarOcc(QString focc);
 };
 
 
