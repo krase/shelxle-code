@@ -113,15 +113,14 @@ DSRGui::DSRGui(QWidget *parent):
     // fill editLayout with widgets:
     editLayout->addWidget(outtext, 1, 0);
 
-    occ = new QLineEdit;
-    part = new QSpinBox;
-    resinum = new QLineEdit;
-    resiclass = new QLineEdit;
+    occEdit = new QLineEdit;
+    partspinner = new QSpinBox;
+    resinumEdit = new QLineEdit;
+    resiclassEdit = new QLineEdit;
 
-    occ->setMaximumWidth(40);
-    //part->setMaximumWidth(40);
-    resinum->setMaximumWidth(40);
-    resiclass->setMaximumWidth(50);
+    occEdit->setMaximumWidth(40);
+    resinumEdit->setMaximumWidth(40);
+    resiclassEdit->setMaximumWidth(50);
 
     searchLayout1->addWidget(searchLabel);
     searchLayout1->addWidget(SearchInp);
@@ -139,15 +138,15 @@ DSRGui::DSRGui(QWidget *parent):
     groupBox2->setLayout(optionsLayout3);
 
     optionsLayout4->addWidget(partLabel, 0, 0);
-    optionsLayout4->addWidget(part, 0, 1);
+    optionsLayout4->addWidget(partspinner, 0, 1);
     optionsLayout4->addWidget(occLabel, 1, 0);
-    optionsLayout4->addWidget(occ, 1, 1);
+    optionsLayout4->addWidget(occEdit, 1, 1);
     optionsLayout4->addWidget(resiLabel, 2, 0);
-    optionsLayout4->addWidget(resinum, 2, 1);
+    optionsLayout4->addWidget(resinumEdit, 2, 1);
     optionsLayout4->addWidget(classLabel, 3, 0);
-    optionsLayout4->addWidget(resiclass, 3, 1);
-    part->setRange(-99, 99);
-    part->setValue(1);
+    optionsLayout4->addWidget(resiclassEdit, 3, 1);
+    partspinner->setRange(-99, 99);
+    partspinner->setValue(1);
     partLabel->setAlignment(Qt::AlignRight);
     occLabel->setAlignment(Qt::AlignRight);
     resiLabel->setAlignment(Qt::AlignRight);
@@ -166,21 +165,25 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT (DSRFit()));
     connect(runExtBox, SIGNAL (clicked(bool)),
             this, SLOT (DSRFitExtern(bool)));
+    connect(dfixBox, SIGNAL (clicked(bool)),
+            this, SLOT (DFIX(bool)));
     connect(invertFragBox, SIGNAL (clicked(bool)),
             this, SLOT (InvertFrag(bool)));
     connect(refineBox, SIGNAL (clicked(bool)),
             this, SLOT (RefineOrNot(bool)));
     connect(SearchInp, SIGNAL(textChanged(QString)),
             this, SLOT(searchFragment(QString)));
+    connect(partspinner, SIGNAL(valueChanged(int)),
+            this, SLOT(PART(int)));
     connect(exportFragButton, SIGNAL(clicked(bool)),
             this, SLOT(ExportFrag(void)));
     connect(fragmentTableView, SIGNAL(clicked(QModelIndex)),
             this, SLOT(setFragName(QModelIndex)));
     /*
-     * -external
-     * -invert
-     * -norefine
-     * -dfix
+     * -external  ok
+     * -invert    ok
+     * -norefine  ok
+     * -dfix      ok
      * -part
      * -fvar/occ
      * -resinum
@@ -204,6 +207,28 @@ void DSRGui::changePicture(QString fragname)
     QPixmap Imagefile = QString(picpath+fragname+".png");
     Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
     imageLabel->setPixmap(Imagefile);
+}
+
+void DSRGui::DFIX(bool checked)
+// toggles the dfix option
+{
+    if (checked)
+    {
+        this->dfix = true;
+    } else
+    {
+        this->dfix = false;
+    }
+    //outtext->clear();
+    //outtext->append(QString(dfix));
+}
+
+void DSRGui::PART(int partnum)
+// toggles the PART option
+{
+    part = partnum;
+    outtext->clear();
+    outtext->append(QString(part).toAscii());
 }
 
 

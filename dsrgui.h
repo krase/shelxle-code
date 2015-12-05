@@ -47,13 +47,10 @@ private:
     QTextEdit* outtext;
     QString*   outlist;
     QLineEdit *SearchInp;
-    QLineEdit *S1;
-    QLineEdit *S2;
-    QLineEdit *S3;
-    QLineEdit *occ;
-    QLineEdit *resinum;
-    QLineEdit *resiclass;
-    QSpinBox  *part; // part edit field
+    QLineEdit *occEdit;
+    QLineEdit *resinumEdit;
+    QLineEdit *resiclassEdit;
+    QSpinBox  *partspinner; // part definition spinbox
 
     QVBoxLayout* mainVLayout;
     QGridLayout* editLayout;
@@ -95,6 +92,11 @@ private:
     bool runext;
     bool invert;
     bool norefine;
+    bool dfix;
+    int part;
+    float fvarocc;
+    int resinum;
+    QString resiclass;
 
     QString fragname;
     QString dsrpath;
@@ -113,7 +115,8 @@ private slots:
     void setFragName(QModelIndex name);
     void searchFragment(QString name);
     bool ExportFrag();
-    //bool insertDSRLine();
+    void DFIX(bool checked);
+    void PART(int part);
 
 };
 
