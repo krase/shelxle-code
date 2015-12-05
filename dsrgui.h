@@ -57,13 +57,13 @@ private:
 
     QVBoxLayout* mainVLayout;
     QGridLayout* editLayout;
-    QVBoxLayout *optionsLayout1;
+    QHBoxLayout *searchLayout1;
     QHBoxLayout *optionsLayout2;
     QVBoxLayout *optionsLayout3;
     QGridLayout *optionsLayout4;
 
-    QHBoxLayout *SourceAtomsLayout;
-    QHBoxLayout *TargetAtomsLayout;
+    //QHBoxLayout *SourceAtomsLayout;
+    //QHBoxLayout *TargetAtomsLayout;
     QHBoxLayout *buttonLayout;
     QHBoxLayout *chooserLayout;
     QPushButton *runDSRButton;

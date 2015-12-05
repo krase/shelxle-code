@@ -44,9 +44,9 @@ DSRGui::DSRGui(QWidget *parent):
     mainVLayout = new QVBoxLayout(this);
     editLayout = new QGridLayout;
     chooserLayout = new QHBoxLayout;
-    SourceAtomsLayout = new QHBoxLayout;
-    optionsLayout1 = new QVBoxLayout;
-    optionsLayout2 = new QHBoxLayout;
+    //SourceAtomsLayout = new QHBoxLayout;
+    searchLayout1 = new QHBoxLayout;
+    //optionsLayout2 = new QHBoxLayout;
     optionsLayout3 = new QVBoxLayout;
     optionsLayout4 = new QGridLayout;
     groupBox1 = new QGroupBox(tr("Disable Residue with 0"));
@@ -58,12 +58,12 @@ DSRGui::DSRGui(QWidget *parent):
     mainVLayout->addLayout(chooserLayout);
     mainVLayout->addLayout(editLayout);
     // layout for all the options
-    mainVLayout->addLayout(optionsLayout1);
-    mainVLayout->addLayout(optionsLayout2);
+    //mainVLayout->addLayout(optionsLayout1);
+    //mainVLayout->addLayout(optionsLayout2);
     //mainVLayout->addLayout(optionsLayout3);
     //mainVLayout->addLayout(optionsLayout4);
-    optionboxes->addWidget(groupBox1);
     optionboxes->addWidget(groupBox2);
+    optionboxes->addWidget(groupBox1);
     optionboxes->addStretch();
     mainVLayout->addLayout(optionboxes);
     // layout for the buttons
@@ -113,35 +113,21 @@ DSRGui::DSRGui(QWidget *parent):
     // fill editLayout with widgets:
     editLayout->addWidget(outtext, 1, 0);
 
-    //fragNameInp->setMaximumWidth(200);
-
-    S1 = new QLineEdit;
-    S2 = new QLineEdit;
-    S3 = new QLineEdit;
     occ = new QLineEdit;
     part = new QSpinBox;
     resinum = new QLineEdit;
     resiclass = new QLineEdit;
 
-    SourceAtomsLayout->addWidget(sourceLabel);
-    sourceLabel->setAlignment(Qt::AlignRight);
-    SourceAtomsLayout->addWidget(S1);
-    SourceAtomsLayout->addWidget(S2);
-    SourceAtomsLayout->addWidget(S3);
-    SourceAtomsLayout->addStretch();
-
-    S1->setMaximumWidth(40);
-    S2->setMaximumWidth(40);
-    S3->setMaximumWidth(40);
     occ->setMaximumWidth(40);
     //part->setMaximumWidth(40);
     resinum->setMaximumWidth(40);
     resiclass->setMaximumWidth(50);
 
-    optionsLayout1->addWidget(searchLabel);
-    optionsLayout1->addWidget(SearchInp);
-    optionsLayout1->addStretch();
-    optionsLayout3->addLayout(optionsLayout1);
+    searchLayout1->addWidget(searchLabel);
+    searchLayout1->addWidget(SearchInp);
+    searchLayout1->addStretch();
+
+    optionsLayout3->addLayout(searchLayout1);
     optionsLayout3->addWidget(runExtBox);
     optionsLayout3->addWidget(invertFragBox);
     optionsLayout3->addWidget(refineBox);
@@ -154,15 +140,18 @@ DSRGui::DSRGui(QWidget *parent):
 
     optionsLayout4->addWidget(partLabel, 0, 0);
     optionsLayout4->addWidget(part, 0, 1);
-    part->setRange(-99, 99);
-    part->setValue(1);
     optionsLayout4->addWidget(occLabel, 1, 0);
     optionsLayout4->addWidget(occ, 1, 1);
     optionsLayout4->addWidget(resiLabel, 2, 0);
     optionsLayout4->addWidget(resinum, 2, 1);
     optionsLayout4->addWidget(classLabel, 3, 0);
     optionsLayout4->addWidget(resiclass, 3, 1);
-    //optionsLayout4->addStretch();
+    part->setRange(-99, 99);
+    part->setValue(1);
+    partLabel->setAlignment(Qt::AlignRight);
+    occLabel->setAlignment(Qt::AlignRight);
+    resiLabel->setAlignment(Qt::AlignRight);
+    classLabel->setAlignment(Qt::AlignRight);
     groupBox1->setLayout(optionsLayout4);  // warum geht das nicht?
 
     buttonLayout->addStretch();
@@ -187,6 +176,16 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT(ExportFrag(void)));
     connect(fragmentTableView, SIGNAL(clicked(QModelIndex)),
             this, SLOT(setFragName(QModelIndex)));
+    /*
+     * -external
+     * -invert
+     * -norefine
+     * -dfix
+     * -part
+     * -fvar/occ
+     * -resinum
+     * -resiclass
+     */
 }
 
 
@@ -236,6 +235,12 @@ bool DSRGui::ExportFrag()
 // export the current fragment
 // TODO: file chooser to chose the target directory
 {
+    outtext->clear();
+    if (fragname.isEmpty())
+    {
+        outtext->append("No fragment chosen. Doing nothing!");
+        return false;
+    }
     QProcess dsr;
     outtext->append("beginning export:");
     outtext->append(fragname);
