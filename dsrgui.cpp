@@ -219,8 +219,8 @@ void DSRGui::DFIX(bool checked)
     {
         this->dfix = false;
     }
-    //outtext->clear();
-    //outtext->append(QString(dfix));
+    outtext->clear();
+    outtext->append(QString::number(dfix));
 }
 
 void DSRGui::PART(int partnum)
@@ -228,7 +228,7 @@ void DSRGui::PART(int partnum)
 {
     part = partnum;
     outtext->clear();
-    outtext->append(QString(part).toAscii());
+    outtext->append(QString::number(part));
 }
 
 
