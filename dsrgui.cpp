@@ -19,10 +19,8 @@
  - show results
 
  - use insertDFIX like method to insert dsrline into file
- - fix pixmap problem when pic is not there
  - find solution for "which dsr"
 
- - add RESI, DFIX, CF3, CF6, CF9, OCC, PART
  - REPLACE
 
  - add groupBoxes for options
@@ -31,6 +29,8 @@
  -
  - export und run in dritte spalte
  - statusleiste mit "rem dsr put ..."
+ - I need a checkbox to simply activate RESI without other options:
+   * use residue checkbox creates number and class field
 
 */
 
@@ -177,23 +177,17 @@ DSRGui::DSRGui(QWidget *parent):
     connect(SearchInp, SIGNAL(textChanged(QString)),
             this, SLOT(searchFragment(QString)));
     connect(occEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(FvarOcc(QString)));
+            this, SLOT(setFvarOcc(QString)));
+    connect(resinumEdit, SIGNAL(textChanged(QString)),
+            this, SLOT(setResiNum(QString)));
+    connect(resiclassEdit, SIGNAL(textChanged(QString)),
+            this, SLOT(setResiClass(QString)));
     connect(partspinner, SIGNAL(valueChanged(int)),
-            this, SLOT(PART(int)));
+            this, SLOT(setPART(int)));
     connect(exportFragButton, SIGNAL(clicked(bool)),
             this, SLOT(ExportFrag(void)));
     connect(fragmentTableView, SIGNAL(clicked(QModelIndex)),
             this, SLOT(setFragName(QModelIndex)));
-    /*
-     * -external  ok
-     * -invert    ok
-     * -norefine  ok
-     * -dfix      ok
-     * -part      ok
-     * -fvar/occ
-     * -resinum
-     * -resiclass
-     */
 }
 
 
@@ -228,23 +222,62 @@ void DSRGui::DFIX(bool checked)
     outtext->append(QString(dfix));
 }
 
-void DSRGui::FvarOcc(QString focc)
+void DSRGui::setResiClass(QString rclass)
 // defines the PART option
 {
+  outtext->clear();
+    if (rclass[0].isLetter())
+    {
+        if (rclass.length() > 4) {
+            resiclass = QString(rclass.mid(0, 4));
+        } else {
+            resiclass = QString(rclass);
+        }
+    } else {
+        resiclass = QString("");
+    }
+  outtext->append(resiclass);
+}
+
+void DSRGui::setFvarOcc(QString focc)
+// defines the PART option
+{
+  outtext->clear();
     bool ok;
     focc.toFloat(&ok);
     if (ok)
     {
         fvarocc = QString("OCC ")+QString::number(focc.toFloat());
-        outtext->clear();
-        //outtext->append(fvarocc);
-    } else if (!ok and focc.length() >= 2) {
-        outtext->clear();
+    } else if (!ok and focc.length() >= 1) {
         outtext->append(QString("Please provide a real number for FVAR/OCC"));
+    } else if (!ok and focc.length() == 0) {
+        fvarocc = QString("");
     }
+  outtext->append(fvarocc);
 }
 
-void DSRGui::PART(int partnum)
+void DSRGui::setResiNum(QString resnum)
+// defines the residue number
+{
+  outtext->clear();
+    resinum = QString("");
+    bool ok;
+    resnum.toInt(&ok);
+    if (ok)
+    {
+        resinum = QString::number(resnum.toInt());
+    } else if (!ok and resnum.length() >= 1) {
+        outtext->append(QString("Please provide an integer number as residue number."));
+        resinum = QString("");
+    } else if (ok and resnum.toInt() == 0) {
+        resinum = QString("");
+    } else if (!ok and resnum.length() == 0) {
+        resinum = QString("");
+    }
+  outtext->append(resinum);
+}
+
+void DSRGui::setPART(int partnum)
 // defines the PART option
 {
     if (partnum == 0)

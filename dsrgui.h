@@ -116,8 +116,10 @@ private slots:
     void searchFragment(QString name);
     bool ExportFrag();
     void DFIX(bool checked);
-    void PART(int part);
-    void FvarOcc(QString focc);
+    void setPART(int part);
+    void setFvarOcc(QString focc);
+    void setResiNum(QString resnum);
+    void setResiClass(QString rclass);
 };
 
 
