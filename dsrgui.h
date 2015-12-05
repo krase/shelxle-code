@@ -57,16 +57,20 @@ private:
 
     QVBoxLayout* mainVLayout;
     QGridLayout* editLayout;
-    QHBoxLayout *optionsLayout1,
-                *optionsLayout2,
-                *optionsLayout3,
-                *optionsLayout4,
-                *SourceAtomsLayout,
-                *TargetAtomsLayout,
-                *buttonLayout,
-                *chooserLayout;
+    QVBoxLayout *optionsLayout1;
+    QHBoxLayout *optionsLayout2;
+    QVBoxLayout *optionsLayout3;
+    QGridLayout *optionsLayout4;
+
+    QHBoxLayout *SourceAtomsLayout;
+    QHBoxLayout *TargetAtomsLayout;
+    QHBoxLayout *buttonLayout;
+    QHBoxLayout *chooserLayout;
+    QPushButton *runDSRButton;
+    QPushButton *exportFragButton;
     QGroupBox* groupBox1;
-    //QGroupBox* grBox2;
+    QGroupBox* groupBox2;
+    QHBoxLayout* optionboxes;
     QLabel *imageLabel,
            *sourceLabel,
            *searchLabel,

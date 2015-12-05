@@ -45,12 +45,14 @@ DSRGui::DSRGui(QWidget *parent):
     editLayout = new QGridLayout;
     chooserLayout = new QHBoxLayout;
     SourceAtomsLayout = new QHBoxLayout;
-    optionsLayout1 = new QHBoxLayout;
+    optionsLayout1 = new QVBoxLayout;
     optionsLayout2 = new QHBoxLayout;
-    optionsLayout3 = new QHBoxLayout;
-    groupBox1 = new QGroupBox(tr("Chose Options"));
-    optionsLayout4 = new QHBoxLayout;
+    optionsLayout3 = new QVBoxLayout;
+    optionsLayout4 = new QGridLayout;
+    groupBox1 = new QGroupBox(tr("Disable Residue with 0"));
+    groupBox2 = new QGroupBox(tr("Chose Options"));
     buttonLayout = new QHBoxLayout;
+    optionboxes = new QHBoxLayout;
 
     // layout for the interactions
     mainVLayout->addLayout(chooserLayout);
@@ -58,13 +60,17 @@ DSRGui::DSRGui(QWidget *parent):
     // layout for all the options
     mainVLayout->addLayout(optionsLayout1);
     mainVLayout->addLayout(optionsLayout2);
-    mainVLayout->addLayout(optionsLayout3);
+    //mainVLayout->addLayout(optionsLayout3);
     //mainVLayout->addLayout(optionsLayout4);
-    mainVLayout->addWidget(groupBox1);
+    optionboxes->addWidget(groupBox1);
+    optionboxes->addWidget(groupBox2);
+    optionboxes->addStretch();
+    mainVLayout->addLayout(optionboxes);
     // layout for the buttons
     mainVLayout->addLayout(buttonLayout);
 
-    //QPushButton* FileOpenButton = new QPushButton(tr("SHELXL .res file"));
+    runDSRButton = new QPushButton(tr("Run!"));
+    exportFragButton = new QPushButton(tr("Export Fragment"));
 
     runExtBox = new QCheckBox(tr("External Restraints"));
     invertFragBox = new QCheckBox(tr("Invert Coordinates"));
@@ -73,11 +79,11 @@ DSRGui::DSRGui(QWidget *parent):
 
     sourceLabel = new QLabel(tr("Source Atoms:"));
     searchLabel = new QLabel(tr("Search Fragment:"));
+    SearchInp = new QLineEdit;
     partLabel = new QLabel(tr("PART:"));
     occLabel = new QLabel(tr("FVAR+Occupancy:"));
     resiLabel = new QLabel(tr("Residue Number:"));
     classLabel = new QLabel(tr("Residue Class:"));
-    //enableResiLabel = new QLabel(tr("Use Residue:"));
 
     outtext = new QTextEdit;
     fragmentList = new QStringListModel;
@@ -91,7 +97,6 @@ DSRGui::DSRGui(QWidget *parent):
     outtext->setMinimumWidth(QFontMetrics(outtext->font()).width(
     "###################################################################################"));
     //fragNameInp = new QLineEdit;
-    SearchInp = new QLineEdit;
 
     chooserLayout->addWidget(fragmentTableView);
     imageLabel = new QLabel();
@@ -133,33 +138,31 @@ DSRGui::DSRGui(QWidget *parent):
     resinum->setMaximumWidth(40);
     resiclass->setMaximumWidth(50);
 
-    QPushButton* runDSRButton = new QPushButton(tr("Run!"));
-    QPushButton* exportFragButton = new QPushButton(tr("Export Fragment"));
-
     optionsLayout1->addWidget(searchLabel);
     optionsLayout1->addWidget(SearchInp);
     optionsLayout1->addStretch();
+    optionsLayout3->addLayout(optionsLayout1);
+    optionsLayout3->addWidget(runExtBox);
+    optionsLayout3->addWidget(invertFragBox);
+    optionsLayout3->addWidget(refineBox);
+    optionsLayout3->addWidget(dfixBox);
+    //optionsLayout3->addStretch();
 
-    optionsLayout2->addWidget(runExtBox);
-    optionsLayout2->addWidget(invertFragBox);
-    optionsLayout2->addWidget(refineBox);
-    optionsLayout2->addWidget(dfixBox);
-    optionsLayout2->addStretch();
-
-    optionsLayout3->addLayout(SourceAtomsLayout);
+    //optionsLayout3->addLayout(SourceAtomsLayout);
     optionsLayout3->addStretch();
+    groupBox2->setLayout(optionsLayout3);
 
-    optionsLayout4->addWidget(partLabel);
-    optionsLayout4->addWidget(part);
+    optionsLayout4->addWidget(partLabel, 0, 0);
+    optionsLayout4->addWidget(part, 0, 1);
     part->setRange(-99, 99);
     part->setValue(1);
-    optionsLayout4->addWidget(occLabel);
-    optionsLayout4->addWidget(occ);
-    optionsLayout4->addWidget(resiLabel);
-    optionsLayout4->addWidget(resinum);
-    optionsLayout4->addWidget(classLabel);
-    optionsLayout4->addWidget(resiclass);
-    optionsLayout4->addStretch();
+    optionsLayout4->addWidget(occLabel, 1, 0);
+    optionsLayout4->addWidget(occ, 1, 1);
+    optionsLayout4->addWidget(resiLabel, 2, 0);
+    optionsLayout4->addWidget(resinum, 2, 1);
+    optionsLayout4->addWidget(classLabel, 3, 0);
+    optionsLayout4->addWidget(resiclass, 3, 1);
+    //optionsLayout4->addStretch();
     groupBox1->setLayout(optionsLayout4);  // warum geht das nicht?
 
     buttonLayout->addStretch();
@@ -270,8 +273,6 @@ bool DSRGui::DSRFit()
     dsr.setProcessChannelMode(QProcess::MergedChannels);
     dsr.closeWriteChannel();
     outtext->clear();
-    //qDebug() << runext << invert;
-    //qDebug() << ResFileName;
     if (ResFileName.isEmpty())
     {
         outtext->append("No res file chosen. Doing nothing!");
@@ -279,19 +280,15 @@ bool DSRGui::DSRFit()
     }
     if (!runext and !invert) // the standard run without extra options
     {
-        outtext->append("running normal");
         if (norefine)       // with norefine option
         {
-            outtext->append("nor refine");
             dsr.start(dsrpath, QStringList() << QString("-r -n") << ResFileName);
         } else {           // ordinary run
-            outtext->append("with refine");
             dsr.start(dsrpath, QStringList() << QString("-r") << ResFileName);
         }
     }
     else if (runext and !invert) // with external restraints
     {
-        outtext->append("running external");
         if (norefine) // with norefine option enabled
         {
             dsr.start(dsrpath, QStringList() << QString("-re -n") << ResFileName);
@@ -301,7 +298,6 @@ bool DSRGui::DSRFit()
     }
     else if (!runext and invert)
     {
-        outtext->append("running normal + invert");
         if (norefine)  // norefine enabled and inverted
         {
             dsr.start(dsrpath, QStringList() << QString("-r -t -n") << ResFileName);
@@ -311,7 +307,6 @@ bool DSRGui::DSRFit()
     }
     else if (runext and invert) // external restraints and inverted
     {
-        outtext->append("running external + inverted");
         if (norefine)
         {
             dsr.start(dsrpath, QStringList() << QString("-re -t -n") << ResFileName);
