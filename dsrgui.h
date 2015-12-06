@@ -93,6 +93,7 @@ private:
     bool runext;
     bool invert;
     bool norefine;
+    bool replace;
     QString dfix;
     QString part;
     QString fvarocc;
@@ -102,7 +103,10 @@ private:
     QString fragname;
     QString dsrpath;
     QString picpath;
+    QString combiDSRline;
 
+signals:
+   void optionTextChanged(void);
 
 public slots:
 
@@ -113,6 +117,7 @@ private slots:
     void DSRFitExtern(bool checked);
     void InvertFrag(bool checked);
     void RefineOrNot(bool checked);
+    void ReplaceOrNot(bool checked);
     bool DSRListFragments(); // list fragments in the DB
     void setFragName(QModelIndex name);
     void searchFragment(QString name);
@@ -123,6 +128,7 @@ private slots:
     void setResiNum(QString resnum);
     void setResiClass(QString rclass);
     void enableResi(bool enable);
+    void combineOptionstext(void);
 };
 
 

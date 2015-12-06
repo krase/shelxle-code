@@ -129,6 +129,7 @@ DSRGui::DSRGui(QWidget *parent):
 
     optionsLayout1->addLayout(partLayout);
     optionsLayout1->addLayout(occLayout);
+    optionsLayout1->addWidget(replaceMode);
     optionsLayout1->addLayout(searchLayout1);
     optionsLayout1->addStretch();
     groupBox1->setLayout(optionsLayout1);
@@ -152,7 +153,7 @@ DSRGui::DSRGui(QWidget *parent):
     partspinner->setValue(1);
     classLabel->setAlignment(Qt::AlignRight);
     resiLabel->setAlignment(Qt::AlignRight);
-    groupBox3->setLayout(optionsLayout3);  // warum geht das nicht?
+    groupBox3->setLayout(optionsLayout3);
     groupBox3->setCheckable(true);
 
     buttonLayout->addStretch();
@@ -174,6 +175,8 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT (InvertFrag(bool)));
     connect(refineBox, SIGNAL (clicked(bool)),
             this, SLOT (RefineOrNot(bool)));
+    connect(replaceMode, SIGNAL(clicked(bool)),
+            this, SLOT(ReplaceOrNot(bool)));
     connect(SearchInp, SIGNAL(textChanged(QString)),
             this, SLOT(searchFragment(QString)));
     connect(occEdit, SIGNAL(textChanged(QString)),
@@ -190,51 +193,34 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT(setFragName(QModelIndex)));
     connect(groupBox3, SIGNAL(toggled(bool)),
             this, SLOT(enableResi(bool)));
+    connect(this, SIGNAL(optionTextChanged(void)),
+            this, SLOT(combineOptionstext(void)));
 }
 
+void DSRGui::combineOptionstext(void)
+{
+    QString putreplace = QString("PUT ");
+    if (replace) {
+        putreplace = QString("REPLACE ");
+    }
+    QString outstring = QString(QString("REM DSR ")+putreplace+fragname+" "+QString("WITH foo ")+
+                        QString("ON bar ")+part+" "+fvarocc+" "+dfix+" "+resistr);
+    combiDSRline = outstring.simplified().toUpper();
+    outtext->append(combiDSRline);
+}
 
 void DSRGui::enableResi(bool enable)
 //
-{  outtext->clear();
+{
+    outtext->clear();
     if (enable)
     {
         resistr = QString("RESI ")+resinum+" "+resiclass;
     } else {
         resistr = QString("");
     }
-    //emit changed;
-  outtext->append(resistr);
-}
-
-void DSRGui::setFragName(QModelIndex name)
-// set the fragment name variable
-{
-    fragname = name.sibling(name.row(), 0).data().toString();
-    outtext->clear();
-    outtext->append(fragname);
-    this->changePicture(fragname);
-}
-
-void DSRGui::changePicture(QString fragname)
-// changes the picture of the fragment to fragname
-{
-    QPixmap Imagefile = QString(picpath+fragname+".png");
-    Imagefile = Imagefile.scaledToWidth(350, Qt::SmoothTransformation);
-    imageLabel->setPixmap(Imagefile);
-}
-
-void DSRGui::DFIX(bool checked)
-// toggles the dfix option
-{
-    if (checked)
-    {
-        this->dfix = QString("DFIX");
-    } else
-    {
-        this->dfix = QString("");
-    }
-    outtext->clear();
-    outtext->append(QString(dfix));
+  emit optionTextChanged();
+  //outtext->append(resistr);
 }
 
 void DSRGui::setResiClass(QString rclass)
@@ -252,6 +238,7 @@ void DSRGui::setResiClass(QString rclass)
         resiclass = QString("");
     }
     this->enableResi(true);
+    emit optionTextChanged();
   //outtext->append(resiclass);
 }
 
@@ -274,7 +261,42 @@ void DSRGui::setResiNum(QString resnum)
         resinum = QString("");
     }
     this->enableResi(true);
+    emit optionTextChanged();
   //outtext->append(resinum);
+}
+
+void DSRGui::setFragName(QModelIndex name)
+// set the fragment name variable
+{
+    outtext->clear();
+    fragname = name.sibling(name.row(), 0).data().toString();
+    outtext->clear();
+    //outtext->append(fragname);
+    this->changePicture(fragname);
+    emit optionTextChanged();
+}
+
+void DSRGui::changePicture(QString fragname)
+// changes the picture of the fragment to fragname
+{
+    QPixmap Imagefile = QString(picpath+fragname+".png");
+    Imagefile = Imagefile.scaledToWidth(350, Qt::SmoothTransformation);
+    imageLabel->setPixmap(Imagefile);
+}
+
+void DSRGui::DFIX(bool checked)
+// toggles the dfix option
+{
+    outtext->clear();
+    if (checked)
+    {
+        this->dfix = QString("DFIX");
+    } else
+    {
+        this->dfix = QString("");
+    }
+    emit optionTextChanged();
+    //outtext->append(QString(dfix));
 }
 
 void DSRGui::setFvarOcc(QString focc)
@@ -291,12 +313,14 @@ void DSRGui::setFvarOcc(QString focc)
     } else if (!ok and focc.length() == 0) {
         fvarocc = QString("");
     }
-  outtext->append(fvarocc);
+    emit optionTextChanged();
+  //outtext->append(fvarocc);
 }
 
 void DSRGui::setPART(int partnum)
 // defines the PART option
 {
+    outtext->clear();
     if (partnum == 0)
     {
         part = QString("");
@@ -305,9 +329,10 @@ void DSRGui::setPART(int partnum)
     {
         QString s = QString::number(partnum);
         part = QString("PART ")+s ;
-        outtext->clear();
-        outtext->append(part);
+        //outtext->clear();
+        //outtext->append(part);
     }
+    emit optionTextChanged();
 }
 
 void DSRGui::DSRFitExtern(bool checked)
@@ -374,6 +399,19 @@ void DSRGui::RefineOrNot(bool checked)
     }
 }
 
+void DSRGui::ReplaceOrNot(bool checked)
+// enable or disable replace mode
+{
+    outtext->clear();
+    if (checked)
+    {
+        this->replace = true;
+    } else
+    {
+        this->replace = false;
+    }
+    emit optionTextChanged();
+}
 
 bool DSRGui::DSRFit()
 {
