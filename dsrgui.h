@@ -41,6 +41,7 @@ public:
     explicit DSRGui(QWidget *parent = 0);
 
 private:
+    void ResFileOpenDialog();
     QTextEdit* outtext;
     QString*   outlist;
     QLineEdit *SearchInp;

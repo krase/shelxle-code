@@ -1173,7 +1173,7 @@ Window::Window(){
   fcvsfoAct->setDisabled(true);
   calcAct=fcoMenu->addAction("Crystallographic calculator",this,SLOT(calculator()));
   calcAct->setEnabled(true);
-  calcAct=fcoMenu->addAction("run DSR plugin",this,SLOT(dsr_gui()));
+  calcAct=fcoMenu->addAction("DSR plugin",this,SLOT(dsr_gui()));
   calcAct->setEnabled(true);
   menuBar()->addMenu(fcoMenu);
 

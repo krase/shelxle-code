@@ -21,8 +21,6 @@
  - use insertDFIX like method to insert dsrline into file
  - find solution for "which dsr"
 
- - make outtext as toggle field. (show/hide output button?) blink button on activity?
-
  - statusleiste mit "rem dsr put ..."
 */
 
@@ -74,7 +72,7 @@ DSRGui::DSRGui(QWidget *parent):
     replaceMode = new QCheckBox(tr("Replace Target"));
 
     sourceLabel = new QLabel(tr("Source Atoms:"));
-    searchLabel = new QLabel(tr("Search Fragment:"));
+    searchLabel = new QLabel(tr("Search:"));
     SearchInp = new QLineEdit;
     partLabel = new QLabel(tr("PART:"));
     occLabel = new QLabel(tr("FVAR+Occupancy:"));
@@ -83,7 +81,6 @@ DSRGui::DSRGui(QWidget *parent):
 
     outtext = new QTextEdit;
     fragmentList = new QStringListModel;
-    fragmentListView = new QListView;
     fragmentTableView = new QTableView;
     outtext->setReadOnly(false);
     QFont font("Monospace", 11);
@@ -118,26 +115,31 @@ DSRGui::DSRGui(QWidget *parent):
     searchLayout1->addStretch();
     searchLayout1->addWidget(searchLabel);
     searchLayout1->addWidget(SearchInp);
+    SearchInp->setMinimumWidth(QFontMetrics(SearchInp->font()).width(
+    "Adama"));
 
     partLayout->addStretch();
     partLayout->addWidget(partLabel);
     partLayout->addWidget(partspinner);
+    partspinner->setRange(-99, 99);
+    partspinner->setValue(1);
 
     occLayout->addWidget(occLabel);
     occLayout->addWidget(occEdit);
     occLabel->setAlignment(Qt::AlignRight);
 
+    this->setStatusTip("Foo");
+
     optionsLayout1->addLayout(partLayout);
     optionsLayout1->addLayout(occLayout);
     optionsLayout1->addWidget(replaceMode);
-    optionsLayout1->addLayout(searchLayout1);
     optionsLayout1->addStretch();
     groupBox1->setLayout(optionsLayout1);
 
-    optionsLayout2->addWidget(dfixBox);
     optionsLayout2->addWidget(invertFragBox);
     optionsLayout2->addWidget(runExtBox);
-    optionsLayout2->addWidget(refineBox);
+    //optionsLayout2->addWidget(refineBox);
+    optionsLayout2->addWidget(dfixBox);
     optionsLayout2->addStretch();
     groupBox2->setLayout(optionsLayout2);
 
@@ -145,21 +147,20 @@ DSRGui::DSRGui(QWidget *parent):
     resnumLayout->addWidget(resinumEdit);
     resclassLayout->addWidget(classLabel);
     resclassLayout->addWidget(resiclassEdit);
-
     optionsLayout3->addLayout(resnumLayout);
     optionsLayout3->addLayout(resclassLayout);
     optionsLayout3->addStretch();
-    partspinner->setRange(-99, 99);
-    partspinner->setValue(1);
     classLabel->setAlignment(Qt::AlignRight);
     resiLabel->setAlignment(Qt::AlignRight);
     groupBox3->setLayout(optionsLayout3);
+    resistr = QString("RESI"); // default is to enable residues
     groupBox3->setCheckable(true);
 
     buttonLayout->addStretch();
     buttonLayout->addWidget(runDSRButton);
-    buttonLayout->addSpacing(10);
     buttonLayout->addWidget(exportFragButton);
+    buttonLayout->addSpacing(10);
+    buttonLayout->addLayout(searchLayout1);
     buttonLayout->addStretch();
 
     DSRListFragments();
@@ -198,6 +199,7 @@ DSRGui::DSRGui(QWidget *parent):
 }
 
 void DSRGui::combineOptionstext(void)
+// combines all options to a DSR command line
 {
     QString putreplace = QString("PUT ");
     if (replace) {
@@ -210,7 +212,7 @@ void DSRGui::combineOptionstext(void)
 }
 
 void DSRGui::enableResi(bool enable)
-//
+// combines resistring and resiclass to the full option
 {
     outtext->clear();
     if (enable)
@@ -502,8 +504,6 @@ bool DSRGui::DSRListFragments()
     dsr.start(dsrpath, QStringList() << "-lc");
     dsr.setProcessChannelMode(QProcess::MergedChannels);
     dsr.closeWriteChannel();
-    outtext->clear();
-    outlist->clear();
     if (!dsr.waitForFinished())
     {
         outtext->append("Unable to start DSR.");
@@ -512,25 +512,20 @@ bool DSRGui::DSRListFragments()
         outlist->append(dsr.readAll());
     }
     QStringList list = outlist->split(QRegExp("\n|\r\n|\r"));
-    //split(";");
-    fragmentListView->setModel(fragmentList);
-    //fragmentList->setStringList(list2);
-    //qDebug() << list.size() << "lines";
     QStandardItemModel *FragListmodel = new QStandardItemModel(list.size()-1, 2, this); //x Rows and 2 Columns
     FragListmodel->setHorizontalHeaderItem(0, new QStandardItem(QString("tag")));
     FragListmodel->setHorizontalHeaderItem(1, new QStandardItem(QString("Fragment Name")));
     for (int i = 0; i < list.size()-1; ++i)
     {
-        QString line1 = list[i].split(";;")[0];
-        QString line2 = list[i].split(";;")[2];
+        QString column1 = list[i].split(";;")[0];
+        QString column2 = list[i].split(";;")[2];
         FragListmodel->setVerticalHeaderItem(i, new QStandardItem(QString("")));
-        FragListmodel->setItem(i, 0, new QStandardItem(QString(line1)));
-        FragListmodel->setItem(i, 1, new QStandardItem(QString(line2)));
+        FragListmodel->setItem(i, 0, new QStandardItem(QString(column1)));
+        FragListmodel->setItem(i, 1, new QStandardItem(QString(column2)));
     }
     fragmentTableView->setModel(FragListmodel);
     fragmentTableView->hideColumn(0);
     fragmentTableView->resizeColumnsToContents();
-    //fragmentTableView->resize(QSize(-50, 0));
     fragmentTableView->setGridStyle(Qt::PenStyle(Qt::NoPen));
     fragmentTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     return true;
@@ -547,18 +542,17 @@ bool Window::insertDSRLine(){
 }
 */
 
-/*
-bool DSRGui::ResFileOpenDialog()
+
+void DSRGui::ResFileOpenDialog()
 // File dialog to define the res file processed by DSR
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Open SHELXL .res file"), "", tr("SHELXL .res file (*.res *.RES)"));
-    if (fileName.isEmpty())
-        return false;
-    this->resEdit->setText(fileName);
+    QString picdir = QFileDialog::getExistingDirectory(this,
+        tr("Save picture in ..."), tr("Directory"));
+    if (picdir.isEmpty())
+        return;
+    //this->resEdit->setText(fileName);
     //QFile file(fileName);
     //qDebug() << fileName;
-    this->ResFileName = fileName;
-    return true;
+    //this->ResFileName = fileName;
 }
-*/
+
