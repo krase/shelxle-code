@@ -39,9 +39,6 @@ class DSRGui : public QWidget
 
 public:
     explicit DSRGui(QWidget *parent = 0);
-    QString respath;
-    QFileInfo fileinfo(QString respath);
-
 
 private:
     QTextEdit* outtext;
@@ -103,14 +100,14 @@ private:
     QString resinum;
     QString resiclass;
     QString fragname;
-
     QString dsrpath;
     QString picpath;
+
+
 public slots:
 
 
 private slots:
-    //bool ResFileOpenDialog();
     void changePicture(QString fragname);
     bool DSRFit();
     void DSRFitExtern(bool checked);

@@ -21,14 +21,9 @@
  - use insertDFIX like method to insert dsrline into file
  - find solution for "which dsr"
 
- - add groupBoxes for options
  - make outtext as toggle field. (show/hide output button?) blink button on activity?
- -
- - export und run in dritte spalte
- - statusleiste mit "rem dsr put ..."
- - I need a checkbox to simply activate RESI without other options:
-   * use residue checkbox creates number and class field
 
+ - statusleiste mit "rem dsr put ..."
 */
 
 
@@ -102,15 +97,12 @@ DSRGui::DSRGui(QWidget *parent):
     chooserLayout->addWidget(fragmentTableView);
     imageLabel = new QLabel();
     chooserLayout->addWidget(imageLabel);
+    imageLabel->setMinimumSize(360, 360);
     if (Imagefile.size() != QSize(0,0))
     {
         Imagefile = Imagefile.scaledToWidth(350, Qt::SmoothTransformation);
-        imageLabel->setMinimumSize(380, 380);
         imageLabel->setPixmap(Imagefile);
-    } else {
-        imageLabel->setMinimumSize(380, 380);
     }
-
     // fill editLayout with widgets:
     editLayout->addWidget(outtext, 1, 0);
 
@@ -119,7 +111,7 @@ DSRGui::DSRGui(QWidget *parent):
     resinumEdit = new QLineEdit;
     resiclassEdit = new QLineEdit;
 
-    occEdit->setMaximumWidth(45);
+    occEdit->setMaximumWidth(46);
     resinumEdit->setMaximumWidth(40);
     resiclassEdit->setMaximumWidth(50);
 
@@ -141,10 +133,10 @@ DSRGui::DSRGui(QWidget *parent):
     optionsLayout1->addStretch();
     groupBox1->setLayout(optionsLayout1);
 
-    optionsLayout2->addWidget(runExtBox);
-    optionsLayout2->addWidget(invertFragBox);
-    optionsLayout2->addWidget(refineBox);
     optionsLayout2->addWidget(dfixBox);
+    optionsLayout2->addWidget(invertFragBox);
+    optionsLayout2->addWidget(runExtBox);
+    optionsLayout2->addWidget(refineBox);
     optionsLayout2->addStretch();
     groupBox2->setLayout(optionsLayout2);
 
@@ -163,11 +155,11 @@ DSRGui::DSRGui(QWidget *parent):
     groupBox3->setLayout(optionsLayout3);  // warum geht das nicht?
     groupBox3->setCheckable(true);
 
+    buttonLayout->addStretch();
     buttonLayout->addWidget(runDSRButton);
     buttonLayout->addSpacing(10);
     buttonLayout->addWidget(exportFragButton);
     buttonLayout->addStretch();
-
 
     DSRListFragments();
 
@@ -200,6 +192,7 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT(enableResi(bool)));
 }
 
+
 void DSRGui::enableResi(bool enable)
 //
 {  outtext->clear();
@@ -209,6 +202,7 @@ void DSRGui::enableResi(bool enable)
     } else {
         resistr = QString("");
     }
+    //emit changed;
   outtext->append(resistr);
 }
 
@@ -225,7 +219,7 @@ void DSRGui::changePicture(QString fragname)
 // changes the picture of the fragment to fragname
 {
     QPixmap Imagefile = QString(picpath+fragname+".png");
-    Imagefile = Imagefile.scaledToWidth(400, Qt::SmoothTransformation);
+    Imagefile = Imagefile.scaledToWidth(350, Qt::SmoothTransformation);
     imageLabel->setPixmap(Imagefile);
 }
 
@@ -496,9 +490,9 @@ bool DSRGui::DSRListFragments()
         FragListmodel->setItem(i, 1, new QStandardItem(QString(line2)));
     }
     fragmentTableView->setModel(FragListmodel);
-    fragmentTableView->resizeColumnsToContents();
     fragmentTableView->hideColumn(0);
-    //fragmentTableView->setFrameStyle(0);
+    fragmentTableView->resizeColumnsToContents();
+    //fragmentTableView->resize(QSize(-50, 0));
     fragmentTableView->setGridStyle(Qt::PenStyle(Qt::NoPen));
     fragmentTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     return true;
