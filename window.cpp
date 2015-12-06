@@ -1887,6 +1887,7 @@ Window::Window(){
   }else {
       QTimer::singleShot(200,qPeakDock,SLOT(hide()));
   }
+  dsr_gui(); // remove this later!!!! only for testing!
 }
 
 Window::~Window() {

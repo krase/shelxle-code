@@ -55,18 +55,22 @@ private:
     QVBoxLayout* mainVLayout;
     QGridLayout* editLayout;
     QHBoxLayout *searchLayout1;
-    QHBoxLayout *optionsLayout2;
+    QHBoxLayout *partLayout;
+    QHBoxLayout *occLayout;
+    QHBoxLayout *resnumLayout;
+    QHBoxLayout *resclassLayout;
+    QVBoxLayout *optionsLayout1;
+    QVBoxLayout *optionsLayout2;
     QVBoxLayout *optionsLayout3;
-    QGridLayout *optionsLayout4;
+    QVBoxLayout *optionsLayout4;
 
-    //QHBoxLayout *SourceAtomsLayout;
-    //QHBoxLayout *TargetAtomsLayout;
-    QHBoxLayout *buttonLayout;
+    QVBoxLayout *buttonLayout;
     QHBoxLayout *chooserLayout;
     QPushButton *runDSRButton;
     QPushButton *exportFragButton;
     QGroupBox* groupBox1;
     QGroupBox* groupBox2;
+    QGroupBox* groupBox3;
     QHBoxLayout* optionboxes;
     QLabel *imageLabel,
            *sourceLabel,
@@ -75,8 +79,7 @@ private:
            *occLabel,
            *resiLabel,
            *classLabel;
-           //*enableResiLabel;
-   // QPushButton* runExtButton;
+
     QStringListModel* fragmentList;  // list of fragments from DSR
     QListView* fragmentListView;     // list of fragments from DSR
     QTableView* fragmentTableView;   // list of fragments from DSR
@@ -86,8 +89,9 @@ private:
               *InvertFragBox,  // invert the fragment coords button
               *refineBox,      // refine or not after transfer
               *invertFragBox,  // enable/disable inverted fragment coordinates
-              *dfixBox,           // enable/disable rigid group instead of restraints
-              *rigidGroup;     // enable/disable keep fragment as rigid group
+              *dfixBox,        // enable/disable rigid group instead of restraints
+              *rigidGroup,     // enable/disable keep fragment as rigid group
+              *replaceMode;    // enable replace mode
 
     bool runext;
     bool invert;
@@ -95,6 +99,7 @@ private:
     QString dfix;
     QString part;
     QString fvarocc;
+    QString resistr;
     QString resinum;
     QString resiclass;
     QString fragname;
@@ -120,6 +125,7 @@ private slots:
     void setFvarOcc(QString focc);
     void setResiNum(QString resnum);
     void setResiClass(QString rclass);
+    void enableResi(bool enable);
 };
 
 

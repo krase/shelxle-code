@@ -21,10 +21,7 @@
  - use insertDFIX like method to insert dsrline into file
  - find solution for "which dsr"
 
- - REPLACE
-
  - add groupBoxes for options
- - residue groupbox title: "set residue, use 0 to disable"
  - make outtext as toggle field. (show/hide output button?) blink button on activity?
  -
  - export und run in dritte spalte
@@ -47,38 +44,39 @@ DSRGui::DSRGui(QWidget *parent):
     mainVLayout = new QVBoxLayout(this);
     editLayout = new QGridLayout;
     chooserLayout = new QHBoxLayout;
-    //SourceAtomsLayout = new QHBoxLayout;
     searchLayout1 = new QHBoxLayout;
-    //optionsLayout2 = new QHBoxLayout;
+    partLayout = new QHBoxLayout;
+    occLayout = new QHBoxLayout;
+    resnumLayout = new QHBoxLayout;
+    resclassLayout = new QHBoxLayout;
+    optionsLayout1 = new QVBoxLayout;
+    optionsLayout2 = new QVBoxLayout;
     optionsLayout3 = new QVBoxLayout;
-    optionsLayout4 = new QGridLayout;
-    groupBox1 = new QGroupBox(tr("Disable Residue with 0"));
+    optionsLayout4 = new QVBoxLayout;
+    groupBox1 = new QGroupBox(tr("Chose Options"));
     groupBox2 = new QGroupBox(tr("Chose Options"));
-    buttonLayout = new QHBoxLayout;
+    groupBox3 = new QGroupBox(tr("Use a Residue"));
+    buttonLayout = new QVBoxLayout;
     optionboxes = new QHBoxLayout;
 
     // layout for the interactions
     mainVLayout->addLayout(chooserLayout);
     mainVLayout->addLayout(editLayout);
-    // layout for all the options
-    //mainVLayout->addLayout(optionsLayout1);
-    //mainVLayout->addLayout(optionsLayout2);
-    //mainVLayout->addLayout(optionsLayout3);
-    //mainVLayout->addLayout(optionsLayout4);
-    optionboxes->addWidget(groupBox2);
     optionboxes->addWidget(groupBox1);
+    optionboxes->addWidget(groupBox2);
+    optionboxes->addWidget(groupBox3);
+    optionboxes->addLayout(buttonLayout);
     optionboxes->addStretch();
     mainVLayout->addLayout(optionboxes);
-    // layout for the buttons
-    mainVLayout->addLayout(buttonLayout);
 
-    runDSRButton = new QPushButton(tr("Run!"));
+    runDSRButton = new QPushButton(tr("Fit Fragment!"));
     exportFragButton = new QPushButton(tr("Export Fragment"));
 
     runExtBox = new QCheckBox(tr("External Restraints"));
     invertFragBox = new QCheckBox(tr("Invert Coordinates"));
     refineBox = new QCheckBox(tr("Do not Refine"));
     dfixBox = new QCheckBox(tr("Calc. DFIX"));
+    replaceMode = new QCheckBox(tr("Replace Target"));
 
     sourceLabel = new QLabel(tr("Source Atoms:"));
     searchLabel = new QLabel(tr("Search Fragment:"));
@@ -121,45 +119,55 @@ DSRGui::DSRGui(QWidget *parent):
     resinumEdit = new QLineEdit;
     resiclassEdit = new QLineEdit;
 
-    occEdit->setMaximumWidth(40);
+    occEdit->setMaximumWidth(45);
     resinumEdit->setMaximumWidth(40);
     resiclassEdit->setMaximumWidth(50);
 
+    searchLayout1->addStretch();
     searchLayout1->addWidget(searchLabel);
     searchLayout1->addWidget(SearchInp);
-    searchLayout1->addStretch();
 
-    optionsLayout3->addLayout(searchLayout1);
-    optionsLayout3->addWidget(runExtBox);
-    optionsLayout3->addWidget(invertFragBox);
-    optionsLayout3->addWidget(refineBox);
-    optionsLayout3->addWidget(dfixBox);
-    //optionsLayout3->addStretch();
+    partLayout->addStretch();
+    partLayout->addWidget(partLabel);
+    partLayout->addWidget(partspinner);
 
-    //optionsLayout3->addLayout(SourceAtomsLayout);
+    occLayout->addWidget(occLabel);
+    occLayout->addWidget(occEdit);
+    occLabel->setAlignment(Qt::AlignRight);
+
+    optionsLayout1->addLayout(partLayout);
+    optionsLayout1->addLayout(occLayout);
+    optionsLayout1->addLayout(searchLayout1);
+    optionsLayout1->addStretch();
+    groupBox1->setLayout(optionsLayout1);
+
+    optionsLayout2->addWidget(runExtBox);
+    optionsLayout2->addWidget(invertFragBox);
+    optionsLayout2->addWidget(refineBox);
+    optionsLayout2->addWidget(dfixBox);
+    optionsLayout2->addStretch();
+    groupBox2->setLayout(optionsLayout2);
+
+    resnumLayout->addWidget(resiLabel);
+    resnumLayout->addWidget(resinumEdit);
+    resclassLayout->addWidget(classLabel);
+    resclassLayout->addWidget(resiclassEdit);
+
+    optionsLayout3->addLayout(resnumLayout);
+    optionsLayout3->addLayout(resclassLayout);
     optionsLayout3->addStretch();
-    groupBox2->setLayout(optionsLayout3);
-
-    optionsLayout4->addWidget(partLabel, 0, 0);
-    optionsLayout4->addWidget(partspinner, 0, 1);
-    optionsLayout4->addWidget(occLabel, 1, 0);
-    optionsLayout4->addWidget(occEdit, 1, 1);
-    optionsLayout4->addWidget(resiLabel, 2, 0);
-    optionsLayout4->addWidget(resinumEdit, 2, 1);
-    optionsLayout4->addWidget(classLabel, 3, 0);
-    optionsLayout4->addWidget(resiclassEdit, 3, 1);
     partspinner->setRange(-99, 99);
     partspinner->setValue(1);
-    partLabel->setAlignment(Qt::AlignRight);
-    occLabel->setAlignment(Qt::AlignRight);
-    resiLabel->setAlignment(Qt::AlignRight);
     classLabel->setAlignment(Qt::AlignRight);
-    groupBox1->setLayout(optionsLayout4);  // warum geht das nicht?
+    resiLabel->setAlignment(Qt::AlignRight);
+    groupBox3->setLayout(optionsLayout3);  // warum geht das nicht?
+    groupBox3->setCheckable(true);
 
-    buttonLayout->addStretch();
-    buttonLayout->addWidget(exportFragButton);
     buttonLayout->addWidget(runDSRButton);
     buttonLayout->addSpacing(10);
+    buttonLayout->addWidget(exportFragButton);
+    buttonLayout->addStretch();
+
 
     DSRListFragments();
 
@@ -188,8 +196,21 @@ DSRGui::DSRGui(QWidget *parent):
             this, SLOT(ExportFrag(void)));
     connect(fragmentTableView, SIGNAL(clicked(QModelIndex)),
             this, SLOT(setFragName(QModelIndex)));
+    connect(groupBox3, SIGNAL(toggled(bool)),
+            this, SLOT(enableResi(bool)));
 }
 
+void DSRGui::enableResi(bool enable)
+//
+{  outtext->clear();
+    if (enable)
+    {
+        resistr = QString("RESI ")+resinum+" "+resiclass;
+    } else {
+        resistr = QString("");
+    }
+  outtext->append(resistr);
+}
 
 void DSRGui::setFragName(QModelIndex name)
 // set the fragment name variable
@@ -236,24 +257,8 @@ void DSRGui::setResiClass(QString rclass)
     } else {
         resiclass = QString("");
     }
-  outtext->append(resiclass);
-}
-
-void DSRGui::setFvarOcc(QString focc)
-// defines the PART option
-{
-  outtext->clear();
-    bool ok;
-    focc.toFloat(&ok);
-    if (ok)
-    {
-        fvarocc = QString("OCC ")+QString::number(focc.toFloat());
-    } else if (!ok and focc.length() >= 1) {
-        outtext->append(QString("Please provide a real number for FVAR/OCC"));
-    } else if (!ok and focc.length() == 0) {
-        fvarocc = QString("");
-    }
-  outtext->append(fvarocc);
+    this->enableResi(true);
+  //outtext->append(resiclass);
 }
 
 void DSRGui::setResiNum(QString resnum)
@@ -274,7 +279,25 @@ void DSRGui::setResiNum(QString resnum)
     } else if (!ok and resnum.length() == 0) {
         resinum = QString("");
     }
-  outtext->append(resinum);
+    this->enableResi(true);
+  //outtext->append(resinum);
+}
+
+void DSRGui::setFvarOcc(QString focc)
+// defines the PART option
+{
+  outtext->clear();
+    bool ok;
+    focc.toFloat(&ok);
+    if (ok)
+    {
+        fvarocc = QString("OCC ")+QString::number(focc.toFloat());
+    } else if (!ok and focc.length() >= 1) {
+        outtext->append(QString("Please provide a real number for FVAR/OCC"));
+    } else if (!ok and focc.length() == 0) {
+        fvarocc = QString("");
+    }
+  outtext->append(fvarocc);
 }
 
 void DSRGui::setPART(int partnum)
